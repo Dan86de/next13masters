@@ -11,7 +11,7 @@ export const ProductListItemDescription = ({
 	return (
 		<div className="mt-2 flex justify-between">
 			<div>
-				<h2 className="text-sm font-semibold text-zinc-700">{name}</h2>
+				<h3 className="text-sm font-semibold text-zinc-700">{name}</h2>
 				<p className="text-sm text-zinc-500">
 					<span className="sr-only">Kategoria: </span>
 					{category}
