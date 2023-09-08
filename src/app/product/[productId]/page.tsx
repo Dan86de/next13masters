@@ -32,14 +32,12 @@ export default async function SingleProductPage({ params }: { params: { productI
 	const product = await getProductById(params.productId);
 	return (
 		<div className="mx-auto max-w-2xl">
-			<ul>
-				<ProductCoverImage {...product.image} />
-				<ProductListItemDescription
-					product={{
-						...product,
-					}}
-				/>
-			</ul>
+			<ProductCoverImage {...product.image} />
+			<ProductListItemDescription
+				product={{
+					...product,
+				}}
+			/>
 		</div>
 	);
 }
