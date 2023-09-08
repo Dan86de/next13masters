@@ -62,7 +62,10 @@
 		// allow unused vars prefixed with `_`
 		"@typescript-eslint/no-unused-vars": [
 			"error",
-			{ "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_"
+			}
 		],
 
 		// numbers and booleans are fine in template strings

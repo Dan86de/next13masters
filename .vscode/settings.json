@@ -10,6 +10,7 @@
 	"files.associations": {
 		"*.css": "tailwindcss"
 	},
+	"javascript.preferences.importModuleSpecifier": "non-relative",
 	"editor.quickSuggestions": {
 		"strings": true
 	}
