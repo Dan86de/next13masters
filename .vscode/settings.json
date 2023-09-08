@@ -13,5 +13,8 @@
 	"javascript.preferences.importModuleSpecifier": "non-relative",
 	"editor.quickSuggestions": {
 		"strings": true
+	},
+	"[prisma]": {
+		"editor.defaultFormatter": "Prisma.prisma"
 	}
 }
