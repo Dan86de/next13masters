@@ -17,7 +17,7 @@ type Rating = {
 };
 
 export const getProductsList = async () => {
-	const res = await fetch("https://naszsklep-api.vercel.app/api/products?take=20");
+	const res = await fetch("https://naszsklep-api.vercel.app/api/products");
 	const productsResponse = (await res.json()) as ProductFromResponse[];
 	const products = productsResponse.map((product): Product => {
 		return {
