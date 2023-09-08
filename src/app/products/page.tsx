@@ -4,54 +4,50 @@ import { type Product } from "@/model/product";
 const products: Product[] = [
 	{
 		id: "1",
-		name: "Car",
-		description: "Awesome camper toy",
-		category: "Toys",
+		name: "Adidas One",
+		description: "Awesome adidas sneaker.",
+		category: "Sneakers",
 		price: 2799,
 		image: {
 			alt: "Car",
-			src: "./car.png",
+			src: "./adidas_sneaker.png",
 		},
 	},
 	{
-		id: "2",
-		name: "Mario",
-		description: "Awesome mario cart",
-		category: "Toys",
-		price: 3878,
+		id: "1",
+		name: "CC Whistle",
+		description: "Incredible CalvinKlein sneaker.",
+		category: "Sneakers",
+		price: 18783,
 		image: {
 			alt: "Mario cart",
-			src: "./mario.png",
+			src: "./cc_sneaker.png",
 		},
 	},
 	{
 		id: "3",
-		name: "Toy Car",
-		description: "Some awesome car toy.",
-		category: "Toys",
-		price: 435,
+		name: "Lacoste Run",
+		description: "Some Lacoste sneaker.",
+		category: "Sneakers",
+		price: 4353,
 		image: {
 			alt: "Toy Car",
-			src: "./toy_car.png",
+			src: "./lacoste_sneaker.png",
 		},
 	},
 	{
 		id: "4",
-		name: "Spidey's Backpack",
-		description: "Awesome school backpack.",
-		category: "Toys",
+		name: "Nike Impossible",
+		description: "Nike Impossible is nothing sneaker.",
+		category: "Sneakers",
 		price: 1653,
 		image: {
 			alt: "Backpack",
-			src: "./backpack.png",
+			src: "./nike_sneaker.png",
 		},
 	},
 ];
 
-export default function Home() {
-	return (
-		<section className="mx-auto max-w-md p-12 sm:max-w-2xl">
-			<ProductList products={products} />
-		</section>
-	);
+export default function ProductsPage() {
+	return <ProductList products={products} />;
 }
