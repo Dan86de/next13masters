@@ -6,19 +6,14 @@ type ProductListItemDescriptionProps = {
 };
 
 export const ProductListItemDescription = ({
-	product: { name, category, description, price },
+	product: { name, price },
 }: ProductListItemDescriptionProps) => {
 	return (
-		<div className="mt-2 flex justify-between">
+		<div className="mt-2 flex flex-col justify-between gap-0.5">
 			<div>
-				<h3 className="text-sm font-semibold text-zinc-700">{name}</h3>
-				<p className="text-sm text-zinc-500">
-					<span className="sr-only">Kategoria: </span>
-					{category}
-				</p>
-				<p className="text-sm text-zinc-500">{description}</p>
+				<h3 className="text-sm text-zinc-700">{name}</h3>
 			</div>
-			<p className="text-sm font-medium text-zinc-900">
+			<p className="font-mono text-sm font-medium text-zinc-900">
 				<span className="sr-only">Cena:</span>
 				{formatMoney(price / 100)}
 			</p>
