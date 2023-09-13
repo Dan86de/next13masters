@@ -39,6 +39,7 @@ export default async function SingleProductPage({ params }: { params: { productI
 					...product,
 				}}
 			/>
+			<p>{product.description}</p>
 		</div>
 	);
 }
