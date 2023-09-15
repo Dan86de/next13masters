@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentProps } from "react";
+import { cn } from "@/lib/utils";
 
 type ActiveLinkProps = ComponentProps<typeof Link> & {
 	exact?: boolean;
@@ -18,22 +19,18 @@ export const ActiveLink = ({
 }: ActiveLinkProps) => {
 	const pathname = usePathname();
 
-	const matchedPath =
-		(typeof href === "string" ? href : href.pathname) ??
-		null;
+	const matchedPath = (typeof href === "string" ? href : href.pathname) ?? null;
 	const isActive =
 		(matchedPath &&
 			pathname &&
-			(exact
-				? pathname === matchedPath
-				: pathname.startsWith(matchedPath))) ||
+			(exact ? pathname === matchedPath : pathname.startsWith(matchedPath))) ||
 		false;
 
 	return (
 		<Link
 			{...props}
 			href={href}
-			className={isActive ? activeClassName : className}
+			className={cn(className, isActive && activeClassName)}
 			aria-activedescendant="asd"
 			aria-brailleroledescription=""
 		/>
