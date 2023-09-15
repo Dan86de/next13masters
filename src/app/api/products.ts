@@ -16,8 +16,9 @@ type Rating = {
 	count: number;
 };
 
-export const getProductsList = async (take: number = 20) => {
-	const res = await fetch(`https://naszsklep-api.vercel.app/api/products?take=${take}`);
+export const getProductsList = async (take?: number) => {
+	const takePart = take ? `?take=${take}` : "";
+	const res = await fetch(`https://naszsklep-api.vercel.app/api/products${takePart}`);
 	const productsResponse = (await res.json()) as ProductFromResponse[];
 	const products = productsResponse.map((product): Product => {
 		return {
