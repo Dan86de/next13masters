@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentProps } from "react";
-import { cn } from "@/lib/utils";
 
 type ActiveLinkProps = ComponentProps<typeof Link> & {
 	exact?: boolean;
@@ -30,7 +29,7 @@ export const ActiveLink = ({
 		<Link
 			{...props}
 			href={href}
-			className={cn(className, isActive && activeClassName)}
+			className={isActive ? activeClassName : className}
 			aria-activedescendant="asd"
 			aria-brailleroledescription=""
 		/>
