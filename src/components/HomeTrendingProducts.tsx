@@ -13,7 +13,7 @@ export const HomeTrendingProducts = async () => {
 						Trending products
 					</h2>
 					<Link
-						href={"/products"}
+						href={"/products/1"}
 						className="hidden text-sm font-semibold text-zinc-600 hover:text-zinc-500 sm:block"
 					>
 						See everything
