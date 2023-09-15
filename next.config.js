@@ -11,6 +11,17 @@ const nextConfig = {
 				port: "",
 				pathname: "/images/**",
 			},
+			{
+				protocol: "https",
+				hostname: "tailwindui.com",
+				port: "",
+				pathname: "/img/**",
+			},
+			{
+				protocol: "https",
+				hostname: "dsc.cloud",
+				port: "",
+			},
 		],
 	},
 };

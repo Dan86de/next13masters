@@ -18,7 +18,7 @@ export const Navbar = () => {
 				</ActiveLink>
 				<ActiveLink
 					href={"/products"}
-					className="border-b-2 border-b-transparent"
+					className="border-b-2 border-b-transparent "
 					activeClassName="border-b-zinc-900"
 				>
 					New arrivals
