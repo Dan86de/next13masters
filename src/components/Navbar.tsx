@@ -11,22 +11,22 @@ export const Navbar = () => {
 			<ul className="flex items-center gap-4">
 				<ActiveLink
 					href={"/"}
-					className="border-b-2 border-b-transparent"
-					activeClassName="border-b-zinc-900"
+					className="border-b-2 border-transparent"
+					activeClassName="border-b-2 border-zinc-900"
 				>
 					Home
 				</ActiveLink>
 				<ActiveLink
 					href={"/products"}
-					className="border-b-2 border-b-transparent "
-					activeClassName="border-b-zinc-900"
+					className="border-b-2 border-transparent"
+					activeClassName="border-b-2 border-zinc-900"
 				>
 					New arrivals
 				</ActiveLink>
 				<ActiveLink
 					href={`/products/1` as Route}
-					className="border-b-2 border-b-transparent"
-					activeClassName="border-b-zinc-900"
+					className="border-b-2 border-transparent"
+					activeClassName="border-b-2 border-zinc-900"
 					exact={false}
 				>
 					All
