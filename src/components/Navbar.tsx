@@ -9,23 +9,14 @@ export const Navbar = () => {
 				<h2 className="-rotate-6 bg-zinc-950 p-2 text-3xl font-semibold text-zinc-50">ShopSync</h2>
 			</Link>
 			<ul className="flex items-center gap-4">
-				<ActiveLink
-					href={"/"}
-					className="border-b-2 border-transparent"
-					activeClassName="border-b-2 border-zinc-900"
-				>
+				<ActiveLink href={"/"} activeClassName="border-b-2 border-zinc-900">
 					Home
 				</ActiveLink>
-				<ActiveLink
-					href={"/products"}
-					className="border-b-2 border-transparent"
-					activeClassName="border-b-2 border-zinc-900"
-				>
+				<ActiveLink href={"/products"} activeClassName="border-b-2 border-zinc-900">
 					New arrivals
 				</ActiveLink>
 				<ActiveLink
 					href={`/products/1` as Route}
-					className="border-b-2 border-transparent"
 					activeClassName="border-b-2 border-zinc-900"
 					exact={false}
 				>
