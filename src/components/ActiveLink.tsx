@@ -18,12 +18,24 @@ export const ActiveLink = ({
 }: ActiveLinkProps) => {
 	const pathname = usePathname();
 
-	const matchedPath = (typeof href === "string" ? href : href.pathname) ?? null;
+	const matchedPath =
+		(typeof href === "string" ? href : href.pathname) ??
+		null;
 	const isActive =
 		(matchedPath &&
 			pathname &&
-			(exact ? pathname === matchedPath : pathname.startsWith(matchedPath))) ||
+			(exact
+				? pathname === matchedPath
+				: pathname.startsWith(matchedPath))) ||
 		false;
 
-	return <Link {...props} href={href} className={isActive ? activeClassName : className} />;
+	return (
+		<Link
+			{...props}
+			href={href}
+			className={isActive ? activeClassName : className}
+			aria-activedescendant="asd"
+			aria-brailleroledescription=""
+		/>
+	);
 };

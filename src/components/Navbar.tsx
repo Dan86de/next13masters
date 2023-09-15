@@ -3,9 +3,11 @@ import { ActiveLink } from "./ActiveLink";
 
 export const Navbar = () => {
 	return (
-		<nav className="mx-auto flex max-w-7xl justify-between p-4">
+		<nav className="mx-auto flex max-w-7xl justify-between p-6">
 			<Link href={"/"}>
-				<h2 className="text-2xl font-semibold">SneakerSync</h2>
+				<h2 className="-rotate-6 bg-zinc-950 p-2 text-2xl font-semibold text-zinc-50">
+					SneakerSync
+				</h2>
 			</Link>
 			<ul className="flex items-center gap-4">
 				<ActiveLink href={"/"} activeClassName="border-b-2 border-zinc-900">
