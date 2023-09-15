@@ -5,6 +5,7 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll": true
 	},
+	"tailwindCSS.classAttributes": ["class", "className", "ngClass"],
 	"graphql-config.dotEnvPath": "./.env",
 	"graphql-config.load.configName": "graphql",
 	"files.associations": {
