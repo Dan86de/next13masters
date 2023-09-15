@@ -4,5 +4,5 @@ import { ProductList } from "@/components/ProductList";
 export default async function ProductsPage() {
 	const products = await getProductsList();
 
-	return <ProductList products={products} />;
+	return <ProductList products={products.slice(0, 4)} />;
 }
