@@ -29,7 +29,7 @@ const perks = [
 
 export const HomePerks = () => {
 	return (
-		<section aria-labelledby="perks-heading" className="border-t border-gray-200 bg-gray-50">
+		<section aria-labelledby="perks-heading" className="border-t border-zinc-200 bg-zinc-200">
 			<h2 id="perks-heading" className="sr-only">
 				Our perks
 			</h2>
