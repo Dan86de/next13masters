@@ -6,7 +6,21 @@ export const ProductCoverImage = ({ src, alt }: { src: string; alt: string }) =>
 			<div className="flex h-[400px] items-center justify-center ">
 				<img className="h-full w-full object-cover object-center p-4" src={src} alt={alt} />
 			</div>
-			<div className="absolute left-0 right-0 top-[calc(100%_-_56px)] z-10 flex items-center justify-center opacity-0 transition-all duration-300 group-hover:opacity-100">
+			<div
+				className="
+					absolute 
+					left-0 
+					right-0 
+					top-[calc(100%_-_56px)] 
+					z-10 
+					flex 
+					items-center 
+					justify-center 
+					opacity-0 
+					transition-all 
+					duration-300 
+					group-hover:opacity-100"
+			>
 				<Button variant={"outline"} className="border-2 border-zinc-900 bg-zinc-50">
 					{"Quick add"}
 				</Button>
