@@ -24,7 +24,7 @@ export const Navbar = () => {
 					New arrivals
 				</ActiveLink>
 				<ActiveLink
-					href={`/products/1` as Route}
+					href={"/products/1" as Route}
 					className="border-b-2 border-b-transparent"
 					activeClassName="border-b-2 border-zinc-900"
 					exact={false}
