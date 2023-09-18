@@ -22,6 +22,11 @@ const nextConfig = {
 				hostname: "dsc.cloud",
 				port: "",
 			},
+			{
+				protocol: "https",
+				hostname: "images.unsplash.com",
+				port: "",
+			},
 		],
 	},
 };
