@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 export const Hero = () => {
@@ -33,6 +33,7 @@ export const Hero = () => {
 					src="https://images.unsplash.com/photo-1595991209266-5ff5a3a2f008?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2487&q=80"
 					alt=""
 					className="h-full w-full object-cover object-center"
+					priority
 				/>
 			</div>
 		</div>
