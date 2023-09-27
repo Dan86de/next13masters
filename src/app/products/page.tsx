@@ -1,9 +1,9 @@
-import { getProductsList } from "@/app/api/products";
+import { getProducts } from "@/app/api/products";
 import { NewArrivalsPromoSection } from "@/components/NewArrivalsPromoSection";
 import { ProductList } from "@/components/ProductList";
 
 export default async function ProductsPage() {
-	const products = await getProductsList(4);
+	const products = await getProducts(4);
 
 	return (
 		<>

@@ -16,25 +16,45 @@ type Rating = {
 	count: number;
 };
 
-export const getProductsList = async (take?: number) => {
+export const getProducts = async (take?: number) => {
 	const takePart = take ? `?take=${take}` : "";
-	const res = await fetch(`https://naszsklep-api.vercel.app/api/products${takePart}`);
-	const productsResponse = (await res.json()) as ProductFromResponse[];
-	const products = productsResponse.map((product): Product => {
-		return {
-			id: product.id,
-			name: product.title,
-			price: product.price,
-			description: product.description,
-			category: product.category,
-			image: {
-				src: product.image,
-				alt: product.title,
-			},
-		};
+	const res = await fetch(`http://64.226.106.122:80/graphql`, {
+		method: "POST",
+		body: JSON.stringify({
+			query: /* GRAPHQL */ `
+			query {
+					products {
+					id
+					name
+					description
+					product_image
+					}
+			}
+			`,
+		}),
+		headers: {
+			"Content-Type": "application/json",
+		},
 	});
 
-	return products;
+	const productsResponse = (await res.json()) as ProductFromResponse[];
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	// const products = productsResponse.data.products.map((product): Product => {
+	// 	return {
+	// 		id: product.id,
+	// 		name: product.name,
+	// 		price: 0,
+	// 		description: product.description,
+	// 		category: product.category,
+	// 		image: {
+	// 			src: product.product_image,
+	// 			alt: product.name,
+	// 		},
+	// 	};
+	// });
+
+	// return products;
+	return [];
 };
 
 export const getProductById = async (id: string) => {
