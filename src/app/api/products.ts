@@ -1,98 +1,72 @@
+import {
+	ProductGetByIdDocument,
+	ProductsGetListDocument,
+	type TypedDocumentString,
+} from "@/gql/graphql";
 import { type Product } from "@/model/product";
 
-export type ProductFromResponse = {
-	id: string;
-	title: string;
-	price: number;
-	description: string;
-	category: string;
-	rating: Rating;
-	image: string;
-	longDescription: string;
-};
-
-type Rating = {
-	rate: number;
-	count: number;
-};
-
-export const getProducts = async (take?: number) => {
-	const takePart = take ? `?take=${take}` : "";
-	const res = await fetch(`http://64.226.106.122:80/graphql`, {
+const executeGraphql = async <TResult, TVariables>(
+	query: TypedDocumentString<TResult, TVariables>,
+	variables: TVariables,
+): Promise<TResult> => {
+	if (!process.env.GRAPHQL_URL) {
+		throw TypeError("GRAPHQL_URL not set");
+	}
+	const res = await fetch(process.env.GRAPHQL_URL, {
 		method: "POST",
 		body: JSON.stringify({
-			query: /* GRAPHQL */ `
-			query {
-					products {
-					id
-					name
-					description
-					product_image
-					}
-			}
-			`,
+			query,
+			variables,
 		}),
 		headers: {
 			"Content-Type": "application/json",
 		},
 	});
 
-	const productsResponse = (await res.json()) as ProductFromResponse[];
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-	// const products = productsResponse.data.products.map((product): Product => {
-	// 	return {
-	// 		id: product.id,
-	// 		name: product.name,
-	// 		price: 0,
-	// 		description: product.description,
-	// 		category: product.category,
-	// 		image: {
-	// 			src: product.product_image,
-	// 			alt: product.name,
-	// 		},
-	// 	};
-	// });
+	type GraphQLResponse<T> =
+		| { data?: undefined; errors: { message: string }[] }
+		| { data: T; errors?: undefined };
 
-	// return products;
-	return [];
+	const graphqlResponse = (await res.json()) as GraphQLResponse<TResult>;
+
+	if (graphqlResponse.errors) {
+		throw TypeError(`GRAPHQL Error`, { cause: graphqlResponse.errors });
+	}
+
+	return graphqlResponse.data;
 };
 
-export const getProductById = async (id: string) => {
-	const res = await fetch(`https://naszsklep-api.vercel.app/api/products/${id}`);
-	const productResponse = (await res.json()) as ProductFromResponse;
-	const product: Product = {
-		id: productResponse.id,
-		name: productResponse.title,
-		price: productResponse.price,
-		description: productResponse.description,
-		category: productResponse.category,
+export const getProductsList = async (skip?: number, take?: number): Promise<Product[]> => {
+	const graphqlResponse = await executeGraphql(ProductsGetListDocument, { skip, take });
+
+	return graphqlResponse.products.map((product) => ({
+		id: product.id,
+		name: product.name,
+		price: 0,
+		description: product.description,
+		category: product.category.category_name,
 		image: {
-			src: productResponse.image,
-			alt: productResponse.title,
+			src: product.product_image,
+			alt: product.name,
+		},
+	}));
+};
+
+export const getProductById = async (id: string): Promise<Product | null> => {
+	const graphqlResponse = await executeGraphql(ProductGetByIdDocument, { id });
+	if (!graphqlResponse.product) {
+		throw new Error("There is no product with this ID");
+	}
+	console.log(graphqlResponse.product.category.variations);
+	return {
+		id: graphqlResponse.product.id,
+		name: graphqlResponse.product.name,
+		price: 0,
+		description: graphqlResponse.product.description,
+		category: graphqlResponse.product.category.category_name,
+		image: {
+			src: graphqlResponse.product.product_image,
+			alt: graphqlResponse.product.name,
 		},
 	};
-
-	return product;
-};
-
-export const getProductsPaginated = async (page: number) => {
-	const res = await fetch(
-		`https://naszsklep-api.vercel.app/api/products?take=20&offset=${page === 1 ? 0 : page * 20}`,
-	);
-	const productsResponse = (await res.json()) as ProductFromResponse[];
-	const products = productsResponse.map((product): Product => {
-		return {
-			id: product.id,
-			name: product.title,
-			price: product.price,
-			description: product.description,
-			category: product.category,
-			image: {
-				src: product.image,
-				alt: product.title,
-			},
-		};
-	});
-
-	return products;
 };

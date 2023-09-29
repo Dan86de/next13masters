@@ -108,7 +108,7 @@ export const Footer = () => {
 					</div>
 				</div>
 				<p className="mt-20 text-center text-sm text-zinc-400">
-					&copy; {new Date().getFullYear()} SneakerSync Studios
+					&copy; {new Date().getFullYear()} ShopSync Studios
 				</p>
 			</div>
 		</footer>
