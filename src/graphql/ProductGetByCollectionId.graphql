@@ -1,0 +1,15 @@
+query ProductGetByCollectionId($collectionId: ID!) {
+	productsFromCollection(collectionId: $collectionId) {
+		id
+		name
+		description
+		product_image
+		product_items {
+			price
+		}
+		category {
+			id
+			category_name
+		}
+	}
+}

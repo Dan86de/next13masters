@@ -1,0 +1,6 @@
+query CategoryGetByName($name: String!) {
+	category(name: $name) {
+		id
+		category_name
+	}
+}

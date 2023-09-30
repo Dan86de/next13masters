@@ -1,10 +1,19 @@
-import Image from "next/image";
-import Link from "next/link";
 import { getProductsList } from "@/app/api/products";
 import { Button } from "@/components/ui/button";
+import { formatMoney } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
 
 export const HomeTrendingProducts = async () => {
-	const trendingProducts = (await getProductsList()).slice(0, 4);
+	const products = await getProductsList();
+	const randomTrendingProducts = () => {
+		const randomProducts = [];
+		for (let i = 0; i < 4; i++) {
+			const randomIndex = Math.floor(Math.random() * products.length);
+			randomProducts.push(products[randomIndex]);
+		}
+		return randomProducts;
+	};
 	return (
 		<section aria-labelledby="trending-heading" className="bg-white">
 			<div className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8 lg:py-32">
@@ -24,16 +33,17 @@ export const HomeTrendingProducts = async () => {
 				<div className="relative mt-8">
 					<div className="relative w-full overflow-x-auto">
 						<ul
+							data-testid="products-list"
 							role="list"
 							className="mt-6 grid grid-cols-1 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-2 md:gap-y-0 lg:grid-cols-4 lg:gap-x-8"
 						>
-							{trendingProducts.map((product) => (
+							{randomTrendingProducts().map((product) => (
 								<li
 									key={product.id}
 									className="mx-auto inline-flex w-64 flex-col text-center lg:w-auto"
 								>
 									<div className="group relative">
-										<div className="aspect-h-1 aspect-w-1 h-96 w-full overflow-hidden rounded-md bg-gray-200">
+										<div className="aspect-h-3 aspect-w-2 h-96 w-full overflow-hidden rounded-md bg-gray-200">
 											<Image
 												src={product.image.src}
 												alt={product.image.alt}
@@ -50,7 +60,7 @@ export const HomeTrendingProducts = async () => {
 													{product.name}
 												</Link>
 											</h3>
-											<p className="mt-1 text-gray-900">{product.price}</p>
+											<p className="mt-1 text-gray-900">{formatMoney(product.price / 100)}</p>
 										</div>
 									</div>
 								</li>
