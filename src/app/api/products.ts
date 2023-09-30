@@ -42,13 +42,13 @@ export const getProductsList = async (skip?: number, take?: number): Promise<Pro
 	return graphqlResponse.products.map((product) => ({
 		id: product.id,
 		name: product.name,
-		price: 0,
 		description: product.description,
 		category: product.category.category_name,
 		image: {
 			src: product.product_image,
 			alt: product.name,
 		},
+		price: product.product_items[0].price,
 	}));
 };
 
@@ -61,12 +61,12 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 	return {
 		id: graphqlResponse.product.id,
 		name: graphqlResponse.product.name,
-		price: 0,
 		description: graphqlResponse.product.description,
 		category: graphqlResponse.product.category.category_name,
 		image: {
 			src: graphqlResponse.product.product_image,
 			alt: graphqlResponse.product.name,
 		},
+		price: graphqlResponse.product.product_items[0].price,
 	};
 };

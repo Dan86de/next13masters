@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { UrlObject } from "url";
+import { ActivePaginationBtn } from "./ActivePaginationBtn";
 
 export const Pagination = ({ numOfPages }: { numOfPages: number }) => {
 	return (
@@ -8,8 +9,8 @@ export const Pagination = ({ numOfPages }: { numOfPages: number }) => {
 				{Array.from({ length: numOfPages }, (_, i) => i + 1).map((page) => {
 					return (
 						<li key={page}>
-							<Link href={`/products/${page}`}>
-								<Button variant="link">{page}</Button>
+							<Link href={`/products/${page}` as unknown as UrlObject}>
+								<ActivePaginationBtn page={page} />
 							</Link>
 						</li>
 					);

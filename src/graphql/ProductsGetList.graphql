@@ -8,5 +8,8 @@ query ProductsGetList($skip: Int, $take: Int) {
 			id
 			category_name
 		}
+		product_items {
+			price
+		}
 	}
 }

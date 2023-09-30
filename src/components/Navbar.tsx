@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { type Route } from "next";
 import { ActiveLink } from "./ActiveLink";
 
 export const Navbar = () => {
@@ -8,7 +7,7 @@ export const Navbar = () => {
 			<Link href={"/"}>
 				<h2 className="-rotate-6 bg-zinc-950 p-2 text-3xl font-semibold text-zinc-50">ShopSync</h2>
 			</Link>
-			<ul className="flex items-center gap-4">
+			<ul className="flex items-center gap-4" role="navigation">
 				<ActiveLink
 					href={"/"}
 					className="border-b-2 border-b-transparent"
@@ -18,13 +17,6 @@ export const Navbar = () => {
 				</ActiveLink>
 				<ActiveLink
 					href={"/products"}
-					className="border-b-2 border-b-transparent"
-					activeClassName="border-b-2 border-zinc-900"
-				>
-					New arrivals
-				</ActiveLink>
-				<ActiveLink
-					href={"/products/1" as Route}
 					className="border-b-2 border-b-transparent"
 					activeClassName="border-b-2 border-zinc-900"
 					exact={false}

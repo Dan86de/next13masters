@@ -152,7 +152,7 @@ export type ProductsGetListQueryVariables = Exact<{
 }>;
 
 
-export type ProductsGetListQuery = { products: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string } }> };
+export type ProductsGetListQuery = { products: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string }, product_items: Array<{ price: number }> }> };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -210,6 +210,9 @@ export const ProductsGetListDocument = new TypedDocumentString(`
     category {
       id
       category_name
+    }
+    product_items {
+      price
     }
   }
 }

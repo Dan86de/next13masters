@@ -25,5 +25,13 @@ export const ActiveLink = ({
 			(exact ? pathname === matchedPath : pathname.startsWith(matchedPath))) ||
 		false;
 
-	return <Link {...props} href={href} className={isActive ? activeClassName : className} />;
+	return (
+		<Link
+			{...props}
+			href={href}
+			className={isActive ? activeClassName : className}
+			aria-current={isActive ? isActive : undefined}
+			role={"link"}
+		/>
+	);
 };
