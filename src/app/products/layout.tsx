@@ -7,7 +7,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 	return (
 		<>
 			<section>{children}</section>
-			<Pagination numOfPages={numOfPages} />
+			<Pagination numOfPages={numOfPages} baseUrl="products" />
 		</>
 	);
 }

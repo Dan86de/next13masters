@@ -97,13 +97,21 @@ export type Query = {
   product?: Maybe<Product>;
   /** Get all products */
   products: Array<Product>;
+  /** Get all products from category with given category id. */
+  productsFromCategory?: Maybe<Array<Product>>;
   /** Get all products from collection with given id. */
   productsFromCollection?: Maybe<Array<Product>>;
 };
 
 
+export type QueryCategoriesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QueryCategoryArgs = {
-  id: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
 };
 
 
@@ -123,6 +131,11 @@ export type QueryProductsArgs = {
 };
 
 
+export type QueryProductsFromCategoryArgs = {
+  categoryId: Scalars['ID']['input'];
+};
+
+
 export type QueryProductsFromCollectionArgs = {
   collectionId: Scalars['ID']['input'];
 };
@@ -139,12 +152,34 @@ export type VariationOption = {
   value: Scalars['String']['output'];
 };
 
+export type CategoriesGetListQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type CategoriesGetListQuery = { categories: Array<{ id: string, category_name: string }> };
+
+export type CategoryGetByNameQueryVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+
+export type CategoryGetByNameQuery = { category?: { id: string, category_name: string } | null };
+
 export type ProductGetByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
 export type ProductGetByIdQuery = { product?: { id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string, variations: Array<{ id: string, name: string }> }, product_items: Array<{ id: string, price: number, SKU: string, qty_in_stock: number, product_images: Array<string>, product_configurations?: Array<{ variation_option: { id: string, value: string } }> | null }> } | null };
+
+export type ProductGetByCategoryIdQueryVariables = Exact<{
+  categoryId: Scalars['ID']['input'];
+}>;
+
+
+export type ProductGetByCategoryIdQuery = { productsFromCategory?: Array<{ id: string, name: string, description: string, product_image: string, category: { category_name: string }, product_items: Array<{ price: number }> }> | null };
 
 export type ProductsGetListQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -169,6 +204,22 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
+export const CategoriesGetListDocument = new TypedDocumentString(`
+    query CategoriesGetList($skip: Int, $take: Int) {
+  categories(skip: $skip, take: $take) {
+    id
+    category_name
+  }
+}
+    `) as unknown as TypedDocumentString<CategoriesGetListQuery, CategoriesGetListQueryVariables>;
+export const CategoryGetByNameDocument = new TypedDocumentString(`
+    query CategoryGetByName($name: String!) {
+  category(name: $name) {
+    id
+    category_name
+  }
+}
+    `) as unknown as TypedDocumentString<CategoryGetByNameQuery, CategoryGetByNameQueryVariables>;
 export const ProductGetByIdDocument = new TypedDocumentString(`
     query ProductGetById($id: ID!) {
   product(id: $id) {
@@ -200,6 +251,22 @@ export const ProductGetByIdDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ProductGetByIdQuery, ProductGetByIdQueryVariables>;
+export const ProductGetByCategoryIdDocument = new TypedDocumentString(`
+    query ProductGetByCategoryId($categoryId: ID!) {
+  productsFromCategory(categoryId: $categoryId) {
+    id
+    name
+    description
+    product_image
+    category {
+      category_name
+    }
+    product_items {
+      price
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ProductGetByCategoryIdQuery, ProductGetByCategoryIdQueryVariables>;
 export const ProductsGetListDocument = new TypedDocumentString(`
     query ProductsGetList($skip: Int, $take: Int) {
   products(skip: $skip, take: $take) {

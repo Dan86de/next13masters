@@ -1,0 +1,6 @@
+query CategoriesGetList($skip: Int, $take: Int) {
+	categories(skip: $skip, take: $take) {
+		id
+		category_name
+	}
+}
