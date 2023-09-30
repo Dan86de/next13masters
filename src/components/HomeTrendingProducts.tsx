@@ -1,10 +1,10 @@
-import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { getProductsList } from "@/app/api/products";
+import { Button } from "@/components/ui/button";
 
 export const HomeTrendingProducts = async () => {
-	const trendingProducts = await getProductsList(4);
+	const trendingProducts = (await getProductsList()).slice(0, 4);
 	return (
 		<section aria-labelledby="trending-heading" className="bg-white">
 			<div className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8 lg:py-32">

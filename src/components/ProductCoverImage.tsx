@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 export const ProductCoverImage = ({ src, alt }: { src: string; alt: string }) => {
 	return (
 		<div className="aspect-h-1 aspect-w-1 sm:aspect-h-3 sm:aspect-w-2 relative w-full overflow-hidden rounded-lg">
-			<div className="flex h-[400px] items-center justify-center ">
+			<div className="flex items-center justify-center ">
 				<Image
 					className="h-full w-full object-cover object-center group-hover:opacity-75"
 					width={100}
