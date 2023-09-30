@@ -1,0 +1,29 @@
+query ProductGetById($id: ID!) {
+	product(id: $id) {
+		id
+		name
+		description
+		product_image
+		category {
+			id
+			category_name
+			variations {
+				id
+				name
+			}
+		}
+		product_items {
+			id
+			price
+			SKU
+			qty_in_stock
+			product_images
+			product_configurations {
+				variation_option {
+					id
+					value
+				}
+			}
+		}
+	}
+}

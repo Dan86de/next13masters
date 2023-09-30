@@ -3,7 +3,7 @@ import { NewArrivalsPromoSection } from "@/components/NewArrivalsPromoSection";
 import { ProductList } from "@/components/ProductList";
 
 export default async function ProductsPage() {
-	const products = await getProductsList(4);
+	const products = await getProductsList(0, 4);
 
 	return (
 		<>

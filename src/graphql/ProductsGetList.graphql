@@ -1,0 +1,12 @@
+query ProductsGetList($skip: Int, $take: Int) {
+	products(skip: $skip, take: $take) {
+		id
+		name
+		description
+		product_image
+		category {
+			id
+			category_name
+		}
+	}
+}
