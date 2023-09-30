@@ -13,15 +13,15 @@ export const Navbar = async () => {
 			<ul className="flex items-center gap-4" role="navigation">
 				<ActiveLink
 					href={"/"}
-					className="border-b-2 border-b-transparent"
-					activeClassName="border-b-2 border-zinc-900"
+					className="border-b-2 border-b-transparent text-lg"
+					activeClassName="border-b-2 border-zinc-900 text-lg font-semibold"
 				>
 					Home
 				</ActiveLink>
 				<ActiveLink
 					href={"/products"}
-					className="border-b-2 border-b-transparent"
-					activeClassName="border-b-2 border-zinc-900"
+					className="border-b-2 border-b-transparent text-lg"
+					activeClassName="border-b-2 border-zinc-900 text-lg font-semibold"
 					exact={false}
 				>
 					All
@@ -30,8 +30,8 @@ export const Navbar = async () => {
 					<ActiveLink
 						key={category.id}
 						href={`/categories/${category.name}` as unknown as UrlObject}
-						className="border-b-2 border-b-transparent"
-						activeClassName="border-b-2 border-zinc-900"
+						className="border-b-2 border-b-transparent text-lg"
+						activeClassName="border-b-2 border-zinc-900 text-lg font-semibold"
 						exact={false}
 					>
 						{category.name}
