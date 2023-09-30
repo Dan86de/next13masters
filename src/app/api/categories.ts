@@ -11,7 +11,7 @@ export const getCategoriesList = async (skip?: number, take?: number): Promise<C
 	}));
 };
 
-export const getCategoryByName = async (name: string): Promise<Category | null> => {
+export const getCategoryByName = async (name: string): Promise<Category> => {
 	const graphqlResponse = await executeGraphql(CategoryGetByNameDocument, { name });
 	if (!graphqlResponse.category) {
 		throw new Error("There is no category with this name");

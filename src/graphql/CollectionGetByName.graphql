@@ -1,0 +1,6 @@
+query CollectionGetByName($collectionName: String!) {
+	collection(collectionName: $collectionName) {
+		id
+		name
+	}
+}

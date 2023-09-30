@@ -1,10 +1,12 @@
 import {
 	ProductGetByCategoryIdDocument,
+	ProductGetByCollectionIdDocument,
 	ProductGetByIdDocument,
 	ProductsGetListDocument,
 	type TypedDocumentString,
 } from "@/gql/graphql";
 import { type Product } from "@/model/product";
+import { redirect } from "next/navigation";
 
 export const executeGraphql = async <TResult, TVariables>(
 	query: TypedDocumentString<TResult, TVariables>,
@@ -56,7 +58,7 @@ export const getProductsList = async (skip?: number, take?: number): Promise<Pro
 export const getProductById = async (id: string): Promise<Product | null> => {
 	const graphqlResponse = await executeGraphql(ProductGetByIdDocument, { id });
 	if (!graphqlResponse.product) {
-		throw new Error("There is no product with this ID");
+		redirect("/");
 	}
 	return {
 		id: graphqlResponse.product.id,
@@ -74,9 +76,27 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 export const getProductsByCategoryId = async (categoryId: string): Promise<Product[]> => {
 	const graphqlResponse = await executeGraphql(ProductGetByCategoryIdDocument, { categoryId });
 	if (!graphqlResponse.productsFromCategory) {
-		throw new Error("There is no product with this ID");
+		redirect("/");
 	}
 	return graphqlResponse.productsFromCategory.map((product) => ({
+		id: product.id,
+		name: product.name,
+		description: product.description,
+		category: product.category.category_name,
+		image: {
+			src: product.product_image,
+			alt: product.name,
+		},
+		price: product.product_items[0].price,
+	}));
+};
+
+export const getProductsByCollectionId = async (collectionId: string): Promise<Product[]> => {
+	const graphqlResponse = await executeGraphql(ProductGetByCollectionIdDocument, { collectionId });
+	if (!graphqlResponse.productsFromCollection) {
+		redirect("/");
+	}
+	return graphqlResponse.productsFromCollection.map((product) => ({
 		id: product.id,
 		name: product.name,
 		description: product.description,
