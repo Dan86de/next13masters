@@ -21,7 +21,8 @@ export type Collection = {
   /** Collection id. */
   id: Scalars['ID']['output'];
   /** Collection name. */
-  name: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  products: Array<Product>;
 };
 
 export type Mutation = {
@@ -89,7 +90,7 @@ export type Query = {
   categories: Array<ProductCategory>;
   /** Get single category by ID */
   category?: Maybe<ProductCategory>;
-  /** Get single collection by ID */
+  /** Get single collection by name */
   collection?: Maybe<Collection>;
   /** Get all collections */
   collections: Array<Collection>;
@@ -97,18 +98,32 @@ export type Query = {
   product?: Maybe<Product>;
   /** Get all products */
   products: Array<Product>;
+  /** Get all products from category with given category id. */
+  productsFromCategory?: Maybe<Array<Product>>;
   /** Get all products from collection with given id. */
   productsFromCollection?: Maybe<Array<Product>>;
 };
 
 
+export type QueryCategoriesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QueryCategoryArgs = {
-  id: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
 };
 
 
 export type QueryCollectionArgs = {
-  collectionId: Scalars['ID']['input'];
+  collectionName: Scalars['String']['input'];
+};
+
+
+export type QueryCollectionsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -120,6 +135,11 @@ export type QueryProductArgs = {
 export type QueryProductsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryProductsFromCategoryArgs = {
+  categoryId: Scalars['ID']['input'];
 };
 
 
@@ -139,6 +159,40 @@ export type VariationOption = {
   value: Scalars['String']['output'];
 };
 
+export type CategoriesGetListQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type CategoriesGetListQuery = { categories: Array<{ id: string, category_name: string }> };
+
+export type CategoryGetByNameQueryVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+
+export type CategoryGetByNameQuery = { category?: { id: string, category_name: string } | null };
+
+export type CollectionGetByNameQueryVariables = Exact<{
+  collectionName: Scalars['String']['input'];
+}>;
+
+
+export type CollectionGetByNameQuery = { collection?: { id: string, name: string } | null };
+
+export type CollectionsGetListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CollectionsGetListQuery = { collections: Array<{ id: string, name: string }> };
+
+export type ProductGetByCollectionIdQueryVariables = Exact<{
+  collectionId: Scalars['ID']['input'];
+}>;
+
+
+export type ProductGetByCollectionIdQuery = { productsFromCollection?: Array<{ id: string, name: string, description: string, product_image: string, product_items: Array<{ price: number }>, category: { id: string, category_name: string } }> | null };
+
 export type ProductGetByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -146,13 +200,20 @@ export type ProductGetByIdQueryVariables = Exact<{
 
 export type ProductGetByIdQuery = { product?: { id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string, variations: Array<{ id: string, name: string }> }, product_items: Array<{ id: string, price: number, SKU: string, qty_in_stock: number, product_images: Array<string>, product_configurations?: Array<{ variation_option: { id: string, value: string } }> | null }> } | null };
 
+export type ProductGetByCategoryIdQueryVariables = Exact<{
+  categoryId: Scalars['ID']['input'];
+}>;
+
+
+export type ProductGetByCategoryIdQuery = { productsFromCategory?: Array<{ id: string, name: string, description: string, product_image: string, category: { category_name: string }, product_items: Array<{ price: number }> }> | null };
+
 export type ProductsGetListQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type ProductsGetListQuery = { products: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string } }> };
+export type ProductsGetListQuery = { products: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string }, product_items: Array<{ price: number }> }> };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -169,6 +230,55 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
+export const CategoriesGetListDocument = new TypedDocumentString(`
+    query CategoriesGetList($skip: Int, $take: Int) {
+  categories(skip: $skip, take: $take) {
+    id
+    category_name
+  }
+}
+    `) as unknown as TypedDocumentString<CategoriesGetListQuery, CategoriesGetListQueryVariables>;
+export const CategoryGetByNameDocument = new TypedDocumentString(`
+    query CategoryGetByName($name: String!) {
+  category(name: $name) {
+    id
+    category_name
+  }
+}
+    `) as unknown as TypedDocumentString<CategoryGetByNameQuery, CategoryGetByNameQueryVariables>;
+export const CollectionGetByNameDocument = new TypedDocumentString(`
+    query CollectionGetByName($collectionName: String!) {
+  collection(collectionName: $collectionName) {
+    id
+    name
+  }
+}
+    `) as unknown as TypedDocumentString<CollectionGetByNameQuery, CollectionGetByNameQueryVariables>;
+export const CollectionsGetListDocument = new TypedDocumentString(`
+    query CollectionsGetList {
+  collections {
+    id
+    name
+  }
+}
+    `) as unknown as TypedDocumentString<CollectionsGetListQuery, CollectionsGetListQueryVariables>;
+export const ProductGetByCollectionIdDocument = new TypedDocumentString(`
+    query ProductGetByCollectionId($collectionId: ID!) {
+  productsFromCollection(collectionId: $collectionId) {
+    id
+    name
+    description
+    product_image
+    product_items {
+      price
+    }
+    category {
+      id
+      category_name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ProductGetByCollectionIdQuery, ProductGetByCollectionIdQueryVariables>;
 export const ProductGetByIdDocument = new TypedDocumentString(`
     query ProductGetById($id: ID!) {
   product(id: $id) {
@@ -200,6 +310,22 @@ export const ProductGetByIdDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ProductGetByIdQuery, ProductGetByIdQueryVariables>;
+export const ProductGetByCategoryIdDocument = new TypedDocumentString(`
+    query ProductGetByCategoryId($categoryId: ID!) {
+  productsFromCategory(categoryId: $categoryId) {
+    id
+    name
+    description
+    product_image
+    category {
+      category_name
+    }
+    product_items {
+      price
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ProductGetByCategoryIdQuery, ProductGetByCategoryIdQueryVariables>;
 export const ProductsGetListDocument = new TypedDocumentString(`
     query ProductsGetList($skip: Int, $take: Int) {
   products(skip: $skip, take: $take) {
@@ -210,6 +336,9 @@ export const ProductsGetListDocument = new TypedDocumentString(`
     category {
       id
       category_name
+    }
+    product_items {
+      price
     }
   }
 }
