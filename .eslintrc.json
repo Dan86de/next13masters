@@ -41,10 +41,7 @@
 			}
 		],
 
-		"import/no-duplicates": [
-			"error",
-			{ "prefer-inline": true }
-		],
+		"import/no-duplicates": ["error", { "prefer-inline": true }],
 
 		"no-restricted-imports": [
 			"error",
@@ -68,10 +65,7 @@
 		"@typescript-eslint/require-await": "off",
 
 		// make sure to `await` inside try…catch
-		"@typescript-eslint/return-await": [
-			"error",
-			"in-try-catch"
-		],
+		"@typescript-eslint/return-await": ["error", "in-try-catch"],
 
 		// allow unused vars prefixed with `_`
 		"@typescript-eslint/no-unused-vars": [
@@ -96,5 +90,5 @@
 			}
 		}
 	],
-	"ignorePatterns": ["*.js", "*.jsx"]
+	"ignorePatterns": ["*.js", "*.jsx", "/src/gql/*.ts"]
 }
