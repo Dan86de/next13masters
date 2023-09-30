@@ -1,8 +1,8 @@
+import { type Metadata } from "next";
+import { StarIcon } from "lucide-react";
 import { getProductById } from "@/app/api/products";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { StarIcon } from "lucide-react";
-import { type Metadata } from "next";
 
 export async function generateMetadata({
 	params,
