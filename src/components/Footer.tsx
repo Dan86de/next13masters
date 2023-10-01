@@ -36,9 +36,9 @@ export const Footer = () => {
 			<div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8 lg:py-32">
 				<div className="xl:grid xl:grid-cols-3 xl:gap-8">
 					<Link href={"/"} className="block w-40 ">
-						<h3 className="-rotate-6 bg-zinc-50 p-2 text-3xl font-semibold text-zinc-950">
+						<span className="block -rotate-6 bg-zinc-50 p-2 text-3xl font-semibold text-zinc-950">
 							ShopSync
-						</h3>
+						</span>
 					</Link>
 					<div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
 						<div className="md:grid md:grid-cols-2 md:gap-8">

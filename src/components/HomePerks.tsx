@@ -3,25 +3,25 @@ import Image from "next/image";
 const perks = [
 	{
 		name: "Free returns",
-		imageUrl: "./icon-returns-light.svg",
+		imageUrl: "./icons/icon-returns-light.svg",
 		description:
 			"Not what you expected? Place it back in the parcel and attach the pre-paid postage stamp.",
 	},
 	{
 		name: "Same day delivery",
-		imageUrl: "./icon-calendar-light.svg",
+		imageUrl: "./icons/icon-calendar-light.svg",
 		description:
 			"We offer a delivery service that has never been done before. Checkout today and receive your products within hours.",
 	},
 	{
 		name: "All year discount",
-		imageUrl: "./icon-gift-card-light.svg",
+		imageUrl: "./icons/icon-gift-card-light.svg",
 		description:
 			'Looking for a deal? You can use the code "ALLYEAR" at checkout and get money off all year round.',
 	},
 	{
 		name: "For the planet",
-		imageUrl: "./icon-planet-light.svg",
+		imageUrl: "./icons/icon-planet-light.svg",
 		description:
 			"We’ve pledged 1% of sales to the preservation and restoration of the natural environment.",
 	},

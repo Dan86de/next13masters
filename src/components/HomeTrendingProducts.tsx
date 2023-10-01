@@ -43,13 +43,13 @@ export const HomeTrendingProducts = async () => {
 									className="mx-auto inline-flex w-64 flex-col text-center lg:w-auto"
 								>
 									<div className="group relative">
-										<div className="aspect-h-3 aspect-w-2 h-96 w-full overflow-hidden rounded-md bg-zinc-200">
+										<div className="aspect-h-1 aspect-w-1 sm:aspect-h-3 sm:aspect-w-2 h-96 w-full overflow-hidden rounded-md bg-zinc-200">
 											<Image
 												src={product.image.src}
 												alt={product.image.alt}
 												width={100}
 												height={100}
-												className="h-full w-full object-cover object-center group-hover:opacity-75"
+												className="h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-105 group-hover:opacity-75"
 											/>
 										</div>
 										<div className="mt-6">
