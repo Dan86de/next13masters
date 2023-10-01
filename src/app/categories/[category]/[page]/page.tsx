@@ -6,7 +6,7 @@ export default async function CategoryPage({ params }: { params: { category: str
 	const category = await getCategoryByName(params.category);
 	const productsInThisCategory = await getProductsByCategoryId(category?.id);
 	return (
-		<main className="min-h-screen">
+		<main className="mx-auto min-h-screen max-w-7xl">
 			<ProductList products={productsInThisCategory} />
 		</main>
 	);
