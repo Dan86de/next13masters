@@ -18,7 +18,7 @@ export const HomeTrendingProducts = async () => {
 		<section aria-labelledby="trending-heading" className="bg-white">
 			<div className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8 lg:py-32">
 				<div className="flex items-center justify-between px-4 sm:px-6 lg:px-0">
-					<h2 id="trending-heading" className="text-2xl font-bold tracking-tight text-gray-900">
+					<h2 id="trending-heading" className="text-2xl font-bold tracking-tight text-zinc-900">
 						Trending products
 					</h2>
 					<Link
@@ -43,24 +43,24 @@ export const HomeTrendingProducts = async () => {
 									className="mx-auto inline-flex w-64 flex-col text-center lg:w-auto"
 								>
 									<div className="group relative">
-										<div className="aspect-h-3 aspect-w-2 h-96 w-full overflow-hidden rounded-md bg-gray-200">
+										<div className="aspect-h-1 aspect-w-1 sm:aspect-h-3 sm:aspect-w-2 h-96 w-full overflow-hidden rounded-md bg-zinc-200">
 											<Image
 												src={product.image.src}
 												alt={product.image.alt}
 												width={100}
 												height={100}
-												className="h-full w-full object-cover object-center group-hover:opacity-75"
+												className="h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-105 group-hover:opacity-75"
 											/>
 										</div>
 										<div className="mt-6">
-											<p className="text-sm text-gray-500">{product.category}</p>
-											<h3 className="mt-1 font-semibold text-gray-900">
+											<p className="text-sm text-zinc-500">{product.category}</p>
+											<h3 className="mt-1 font-semibold text-zinc-900">
 												<Link href={`/product/${product.id}`}>
 													<span className="absolute inset-0" />
 													{product.name}
 												</Link>
 											</h3>
-											<p className="mt-1 text-gray-900">{formatMoney(product.price / 100)}</p>
+											<p className="mt-1 text-zinc-900">{formatMoney(product.price / 100)}</p>
 										</div>
 									</div>
 								</li>

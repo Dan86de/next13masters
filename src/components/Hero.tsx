@@ -30,7 +30,7 @@ export const Hero = () => {
 				<Image
 					width={1080}
 					height={1080}
-					src="https://images.unsplash.com/photo-1595991209266-5ff5a3a2f008?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2487&q=80"
+					src="/images/hero.webp"
 					alt=""
 					className="h-full w-full object-cover object-center"
 					priority
