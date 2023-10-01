@@ -42,27 +42,27 @@ export const HomeTrendingProducts = async () => {
 									key={product.id}
 									className="mx-auto inline-flex w-64 flex-col text-center lg:w-auto"
 								>
-									<div className="group relative">
-										<div className="aspect-h-1 aspect-w-1 sm:aspect-h-3 sm:aspect-w-2 h-96 w-full overflow-hidden rounded-md bg-zinc-200">
-											<Image
-												src={product.image.src}
-												alt={product.image.alt}
-												width={100}
-												height={100}
-												className="h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-105 group-hover:opacity-75"
-											/>
-										</div>
-										<div className="mt-6">
-											<p className="text-sm text-zinc-500">{product.category}</p>
-											<h3 className="mt-1 font-semibold text-zinc-900">
-												<Link href={`/product/${product.id}`}>
+									<Link href={`/product/${product.id}`}>
+										<div className="group relative">
+											<div className="aspect-h-1 aspect-w-1 sm:aspect-h-3 sm:aspect-w-2 h-96 w-full overflow-hidden rounded-md bg-zinc-200">
+												<Image
+													src={product.image.src}
+													alt={product.image.alt}
+													width={100}
+													height={100}
+													className="h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-105 group-hover:opacity-75"
+												/>
+											</div>
+											<div className="mt-6">
+												<p className="text-sm text-zinc-500">{product.category}</p>
+												<h3 className="mt-1 font-semibold text-zinc-900">
 													<span className="absolute inset-0" />
 													{product.name}
-												</Link>
-											</h3>
-											<p className="mt-1 text-zinc-900">{formatMoney(product.price / 100)}</p>
+												</h3>
+												<p className="mt-1 text-zinc-900">{formatMoney(product.price / 100)}</p>
+											</div>
 										</div>
-									</div>
+									</Link>
 								</li>
 							))}
 						</ul>

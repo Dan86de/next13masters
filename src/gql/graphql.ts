@@ -98,6 +98,8 @@ export type Query = {
   product?: Maybe<Product>;
   /** Get all products */
   products: Array<Product>;
+  /** Search products by name */
+  productsByName?: Maybe<Array<Product>>;
   /** Get all products from category with given category id. */
   productsFromCategory?: Maybe<Array<Product>>;
   /** Get all products from collection with given id. */
@@ -135,6 +137,11 @@ export type QueryProductArgs = {
 export type QueryProductsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryProductsByNameArgs = {
+  name: Scalars['String']['input'];
 };
 
 
@@ -209,6 +216,13 @@ export type ProductGetByCategoryIdQueryVariables = Exact<{
 
 
 export type ProductGetByCategoryIdQuery = { productsFromCategory?: Array<{ id: string, name: string, description: string, product_image: string, category: { category_name: string }, product_items: Array<{ price: number }> }> | null };
+
+export type ProductsByNameQueryVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+
+export type ProductsByNameQuery = { productsByName?: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string }, product_items: Array<{ price: number }> }> | null };
 
 export type ProductsGetListQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -329,6 +343,23 @@ export const ProductGetByCategoryIdDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ProductGetByCategoryIdQuery, ProductGetByCategoryIdQueryVariables>;
+export const ProductsByNameDocument = new TypedDocumentString(`
+    query ProductsByName($name: String!) {
+  productsByName(name: $name) {
+    id
+    name
+    description
+    product_image
+    category {
+      id
+      category_name
+    }
+    product_items {
+      price
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ProductsByNameQuery, ProductsByNameQueryVariables>;
 export const ProductsGetListDocument = new TypedDocumentString(`
     query ProductsGetList($skip: Int, $take: Int) {
   products(skip: $skip, take: $take) {

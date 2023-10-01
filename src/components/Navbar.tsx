@@ -1,17 +1,19 @@
 import { getCategoriesList } from "@/app/api/categories";
+import { ActiveLink } from "@/components/ActiveLink";
 import Link from "next/link";
 import { UrlObject } from "url";
-import { ActiveLink } from "./ActiveLink";
+import { SearchField } from "./SearchField";
 
 export const Navbar = async () => {
 	const categories = await getCategoriesList();
 	return (
-		<nav className="mx-auto flex max-w-7xl justify-between p-6 py-10">
+		<nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 p-6 py-10">
 			<Link href={"/"}>
 				<span className="block -rotate-6 bg-zinc-950 p-2 text-3xl font-semibold text-zinc-50">
 					ShopSync
 				</span>
 			</Link>
+			<SearchField />
 			<ul className="flex items-center gap-4" role="navigation">
 				<ActiveLink
 					href={"/"}
