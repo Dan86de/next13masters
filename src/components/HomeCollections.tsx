@@ -1,25 +1,16 @@
-import { getProductsList } from "@/app/api/products";
-import { Button } from "@/components/ui/button";
-import { formatMoney } from "@/lib/utils";
-import Image from "next/image";
+import { getCollectionsList } from "@/app/api/collections";
 import Link from "next/link";
+import { UrlObject } from "url";
+import { Button } from "./ui/button";
 
-export const HomeTrendingProducts = async () => {
-	const products = await getProductsList();
-	const randomTrendingProducts = () => {
-		const randomProducts = [];
-		for (let i = 0; i < 4; i++) {
-			const randomIndex = Math.floor(Math.random() * products.length);
-			randomProducts.push(products[randomIndex]);
-		}
-		return randomProducts;
-	};
+export const HomeCollections = async () => {
+	const collections = (await getCollectionsList()).slice(0, 4);
 	return (
 		<section aria-labelledby="trending-heading" className="bg-white">
 			<div className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8 lg:py-32">
 				<div className="flex items-center justify-between px-4 sm:px-6 lg:px-0">
 					<h2 id="trending-heading" className="text-2xl font-bold tracking-tight text-zinc-900">
-						Trending products
+						Trending Collections
 					</h2>
 					<Link
 						href={"/products/1"}
@@ -33,34 +24,23 @@ export const HomeTrendingProducts = async () => {
 				<div className="relative mt-8">
 					<div className="relative w-full overflow-x-auto">
 						<ul
-							data-testid="products-list"
+							data-testid="collections-list"
 							role="list"
 							className="mt-6 grid grid-cols-1 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-2 md:gap-y-0 lg:grid-cols-4 lg:gap-x-8"
 						>
-							{randomTrendingProducts().map((product) => (
+							{collections.map((collection) => (
 								<li
-									key={product.id}
+									key={collection.id}
 									className="mx-auto inline-flex w-64 flex-col text-center lg:w-auto"
 								>
 									<div className="group relative">
-										<div className="aspect-h-3 aspect-w-2 h-96 w-full overflow-hidden rounded-md bg-zinc-200">
-											<Image
-												src={product.image.src}
-												alt={product.image.alt}
-												width={100}
-												height={100}
-												className="h-full w-full object-cover object-center group-hover:opacity-75"
-											/>
-										</div>
 										<div className="mt-6">
-											<p className="text-sm text-zinc-500">{product.category}</p>
 											<h3 className="mt-1 font-semibold text-zinc-900">
-												<Link href={`/product/${product.id}`}>
+												<Link href={`/collections/${collection.name}` as unknown as UrlObject}>
 													<span className="absolute inset-0" />
-													{product.name}
+													{collection.name}
 												</Link>
 											</h3>
-											<p className="mt-1 text-zinc-900">{formatMoney(product.price / 100)}</p>
 										</div>
 									</div>
 								</li>

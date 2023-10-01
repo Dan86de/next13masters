@@ -181,7 +181,10 @@ export type CollectionGetByNameQueryVariables = Exact<{
 
 export type CollectionGetByNameQuery = { collection?: { id: string, name: string } | null };
 
-export type CollectionsGetListQueryVariables = Exact<{ [key: string]: never; }>;
+export type CollectionsGetListQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+}>;
 
 
 export type CollectionsGetListQuery = { collections: Array<{ id: string, name: string }> };
@@ -255,8 +258,8 @@ export const CollectionGetByNameDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<CollectionGetByNameQuery, CollectionGetByNameQueryVariables>;
 export const CollectionsGetListDocument = new TypedDocumentString(`
-    query CollectionsGetList {
-  collections {
+    query CollectionsGetList($skip: Int, $take: Int) {
+  collections(skip: $skip, take: $take) {
     id
     name
   }

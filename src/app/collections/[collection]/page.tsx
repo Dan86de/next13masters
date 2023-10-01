@@ -7,6 +7,9 @@ export default async function SingleCollectionPage({ params }: { params: { colle
 	const productsInCollection = await getProductsByCollectionId(collection.id);
 	return (
 		<main className="min-h-screen">
+			<h1 className="px-16 pb-20 text-4xl font-extrabold first-letter:uppercase">
+				{params.collection}
+			</h1>
 			<ProductList products={productsInCollection} />
 		</main>
 	);

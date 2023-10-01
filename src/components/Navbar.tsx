@@ -8,7 +8,9 @@ export const Navbar = async () => {
 	return (
 		<nav className="mx-auto flex max-w-7xl justify-between p-6 py-10">
 			<Link href={"/"}>
-				<h3 className="-rotate-6 bg-zinc-950 p-2 text-3xl font-semibold text-zinc-50">ShopSync</h3>
+				<span className="-rotate-6 bg-zinc-950 p-2 text-3xl font-semibold text-zinc-50">
+					ShopSync
+				</span>
 			</Link>
 			<ul className="flex items-center gap-4" role="navigation">
 				<ActiveLink
