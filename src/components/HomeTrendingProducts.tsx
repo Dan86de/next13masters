@@ -4,6 +4,8 @@ import { formatMoney } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
+export const revalidate = 15;
+
 export const HomeTrendingProducts = async () => {
 	const products = await getProductsList();
 	const randomTrendingProducts = () => {
@@ -48,9 +50,9 @@ export const HomeTrendingProducts = async () => {
 												<Image
 													src={product.image.src}
 													alt={product.image.alt}
-													width={100}
-													height={100}
-													className="h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-105 group-hover:opacity-75"
+													width={600}
+													height={600}
+													className="h-full w-full object-contain object-center transition-all duration-300 group-hover:scale-105 group-hover:opacity-75"
 												/>
 											</div>
 											<div className="mt-6">

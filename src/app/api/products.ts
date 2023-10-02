@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 export const executeGraphql = async <TResult, TVariables>(
 	query: TypedDocumentString<TResult, TVariables>,
 	variables: TVariables,
+	next?: NextFetchRequestConfig,
 ): Promise<TResult> => {
 	if (!process.env.GRAPHQL_URL) {
 		throw TypeError("GRAPHQL_URL not set");
@@ -25,6 +26,7 @@ export const executeGraphql = async <TResult, TVariables>(
 		headers: {
 			"Content-Type": "application/json",
 		},
+		next,
 	});
 
 	type GraphQLResponse<T> =
@@ -57,7 +59,7 @@ export const getProductsList = async (skip?: number, take?: number): Promise<Pro
 };
 
 export const getProductById = async (id: string): Promise<Product | null> => {
-	const graphqlResponse = await executeGraphql(ProductGetByIdDocument, { id });
+	const graphqlResponse = await executeGraphql(ProductGetByIdDocument, { id }, { revalidate: 1 });
 	if (!graphqlResponse.product) {
 		redirect("/");
 	}

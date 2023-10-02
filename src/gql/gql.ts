@@ -15,7 +15,7 @@ import * as types from './graphql';
  */
 const documents = {
     "query CategoriesGetList($skip: Int, $take: Int) {\n  categories(skip: $skip, take: $take) {\n    id\n    category_name\n  }\n}": types.CategoriesGetListDocument,
-    "query CategoryGetByName($name: String!) {\n  category(name: $name) {\n    id\n    category_name\n  }\n}": types.CategoryGetByNameDocument,
+    "query CategoryGetByName($name: String!) {\n  category(name: $name) {\n    id\n    category_name\n    variations {\n      id\n      name\n      variation_options {\n        id\n        value\n      }\n    }\n  }\n}": types.CategoryGetByNameDocument,
     "query CollectionGetByName($collectionName: String!) {\n  collection(collectionName: $collectionName) {\n    id\n    name\n  }\n}": types.CollectionGetByNameDocument,
     "query CollectionsGetList($skip: Int, $take: Int) {\n  collections(skip: $skip, take: $take) {\n    id\n    name\n  }\n}": types.CollectionsGetListDocument,
     "query ProductGetByCollectionId($collectionId: ID!) {\n  productsFromCollection(collectionId: $collectionId) {\n    id\n    name\n    description\n    product_image\n    product_items {\n      price\n    }\n    category {\n      id\n      category_name\n    }\n  }\n}": types.ProductGetByCollectionIdDocument,
@@ -32,7 +32,7 @@ export function graphql(source: "query CategoriesGetList($skip: Int, $take: Int)
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query CategoryGetByName($name: String!) {\n  category(name: $name) {\n    id\n    category_name\n  }\n}"): typeof import('./graphql').CategoryGetByNameDocument;
+export function graphql(source: "query CategoryGetByName($name: String!) {\n  category(name: $name) {\n    id\n    category_name\n    variations {\n      id\n      name\n      variation_options {\n        id\n        value\n      }\n    }\n  }\n}"): typeof import('./graphql').CategoryGetByNameDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

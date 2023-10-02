@@ -18,5 +18,7 @@ export const SearchField = () => {
 		}
 	}, [debouncedSearchTerm, router]);
 
-	return <Input placeholder="search" type="search" onChange={handleChange} />;
+	return (
+		<Input placeholder="search" type="search" onChange={handleChange} className="hidden md:block" />
+	);
 };

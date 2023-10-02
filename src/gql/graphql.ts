@@ -179,7 +179,7 @@ export type CategoryGetByNameQueryVariables = Exact<{
 }>;
 
 
-export type CategoryGetByNameQuery = { category?: { id: string, category_name: string } | null };
+export type CategoryGetByNameQuery = { category?: { id: string, category_name: string, variations: Array<{ id: string, name: string, variation_options: Array<{ id: string, value: string }> }> } | null };
 
 export type CollectionGetByNameQueryVariables = Exact<{
   collectionName: Scalars['String']['input'];
@@ -260,6 +260,14 @@ export const CategoryGetByNameDocument = new TypedDocumentString(`
   category(name: $name) {
     id
     category_name
+    variations {
+      id
+      name
+      variation_options {
+        id
+        value
+      }
+    }
   }
 }
     `) as unknown as TypedDocumentString<CategoryGetByNameQuery, CategoryGetByNameQueryVariables>;
