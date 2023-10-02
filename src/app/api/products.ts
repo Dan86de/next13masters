@@ -2,6 +2,7 @@ import {
 	ProductGetByCategoryIdDocument,
 	ProductGetByCollectionIdDocument,
 	ProductGetByIdDocument,
+	ProductsByNameDocument,
 	ProductsGetListDocument,
 	type TypedDocumentString,
 } from "@/gql/graphql";
@@ -97,6 +98,24 @@ export const getProductsByCollectionId = async (collectionId: string): Promise<P
 		redirect("/");
 	}
 	return graphqlResponse.productsFromCollection.map((product) => ({
+		id: product.id,
+		name: product.name,
+		description: product.description,
+		category: product.category.category_name,
+		image: {
+			src: product.product_image,
+			alt: product.name,
+		},
+		price: product.product_items[0].price,
+	}));
+};
+
+export const getProductsByName = async (name: string): Promise<Product[]> => {
+	const graphqlResponse = await executeGraphql(ProductsByNameDocument, { name });
+	if (!graphqlResponse.productsByName) {
+		redirect("/");
+	}
+	return graphqlResponse.productsByName.map((product) => ({
 		id: product.id,
 		name: product.name,
 		description: product.description,
