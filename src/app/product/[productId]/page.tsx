@@ -1,7 +1,7 @@
 import { getProductById } from "@/app/api/products";
 import { SuggestedProducts } from "@/components/SuggestedProducts";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, formatMoney } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import { type Metadata } from "next";
 
@@ -42,7 +42,7 @@ export default async function SingleProductPage({ params }: { params: { productI
 				<div className="lg:col-span-5 lg:col-start-8">
 					<div className="flex justify-between">
 						<h1 className="text-xl font-medium text-zinc-900">{product.name}</h1>
-						<p className="text-xl font-medium text-zinc-900">{product.price}</p>
+						<p className="text-xl font-medium text-zinc-900">{formatMoney(product.price / 100)}</p>
 					</div>
 					{/* Reviews */}
 					<div className="mt-4">

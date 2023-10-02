@@ -1,5 +1,6 @@
 import { getCategoriesList } from "@/app/api/categories";
 import { getProductsByCategoryId } from "@/app/api/products";
+import { formatMoney } from "@/lib/utils";
 import { Category } from "@/model/category";
 import Link from "next/link";
 
@@ -45,7 +46,9 @@ export const SuggestedProducts = async ({ categoryName }: { categoryName: string
 								</h3>
 								<p className="mt-1 text-sm text-gray-500">{relatedProduct.category}</p>
 							</div>
-							<p className="text-sm font-medium text-gray-900">{relatedProduct.price}</p>
+							<p className="text-sm font-medium text-gray-900">
+								{formatMoney(relatedProduct.price / 100)}
+							</p>
 						</div>
 					</li>
 				))}
