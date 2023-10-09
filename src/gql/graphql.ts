@@ -96,6 +96,8 @@ export type Query = {
   collections: Array<Collection>;
   /** Get single product by ID */
   product?: Maybe<Product>;
+  /** Get product item from given variation option id (or two for now). */
+  productItemFromGivenVariationOptions?: Maybe<Array<ProductItem>>;
   /** Get all products */
   products: Array<Product>;
   /** Search products by name */
@@ -131,6 +133,12 @@ export type QueryCollectionsArgs = {
 
 export type QueryProductArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryProductItemFromGivenVariationOptionsArgs = {
+  secondVariationOptionId?: InputMaybe<Scalars['ID']['input']>;
+  variationOptionId: Scalars['ID']['input'];
 };
 
 
@@ -201,7 +209,7 @@ export type ProductGetByCollectionIdQueryVariables = Exact<{
 }>;
 
 
-export type ProductGetByCollectionIdQuery = { productsFromCollection?: Array<{ id: string, name: string, description: string, product_image: string, product_items: Array<{ price: number }>, category: { id: string, category_name: string } }> | null };
+export type ProductGetByCollectionIdQuery = { productsFromCollection?: Array<{ id: string, name: string, description: string, product_image: string, product_items: Array<{ id: string, price: number, SKU: string, qty_in_stock: number, product_images: Array<string>, product_configurations?: Array<{ variation_option: { id: string, value: string } }> | null }>, category: { id: string, category_name: string } }> | null };
 
 export type ProductGetByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -215,14 +223,14 @@ export type ProductGetByCategoryIdQueryVariables = Exact<{
 }>;
 
 
-export type ProductGetByCategoryIdQuery = { productsFromCategory?: Array<{ id: string, name: string, description: string, product_image: string, category: { category_name: string }, product_items: Array<{ price: number }> }> | null };
+export type ProductGetByCategoryIdQuery = { productsFromCategory?: Array<{ id: string, name: string, description: string, product_image: string, category: { category_name: string }, product_items: Array<{ id: string, price: number, SKU: string, qty_in_stock: number, product_images: Array<string>, product_configurations?: Array<{ variation_option: { id: string, value: string } }> | null }> }> | null };
 
 export type ProductsByNameQueryVariables = Exact<{
   name: Scalars['String']['input'];
 }>;
 
 
-export type ProductsByNameQuery = { productsByName?: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string }, product_items: Array<{ price: number }> }> | null };
+export type ProductsByNameQuery = { productsByName?: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string }, product_items: Array<{ id: string, price: number, SKU: string, qty_in_stock: number, product_images: Array<string>, product_configurations?: Array<{ variation_option: { id: string, value: string } }> | null }> }> | null };
 
 export type ProductsGetListQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -230,7 +238,7 @@ export type ProductsGetListQueryVariables = Exact<{
 }>;
 
 
-export type ProductsGetListQuery = { products: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string }, product_items: Array<{ price: number }> }> };
+export type ProductsGetListQuery = { products: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string }, product_items: Array<{ id: string, price: number, SKU: string, qty_in_stock: number, product_images: Array<string>, product_configurations?: Array<{ variation_option: { id: string, value: string } }> | null }> }> };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -295,7 +303,17 @@ export const ProductGetByCollectionIdDocument = new TypedDocumentString(`
     description
     product_image
     product_items {
+      id
       price
+      SKU
+      qty_in_stock
+      product_images
+      product_configurations {
+        variation_option {
+          id
+          value
+        }
+      }
     }
     category {
       id
@@ -346,7 +364,17 @@ export const ProductGetByCategoryIdDocument = new TypedDocumentString(`
       category_name
     }
     product_items {
+      id
       price
+      SKU
+      qty_in_stock
+      product_images
+      product_configurations {
+        variation_option {
+          id
+          value
+        }
+      }
     }
   }
 }
@@ -363,7 +391,17 @@ export const ProductsByNameDocument = new TypedDocumentString(`
       category_name
     }
     product_items {
+      id
       price
+      SKU
+      qty_in_stock
+      product_images
+      product_configurations {
+        variation_option {
+          id
+          value
+        }
+      }
     }
   }
 }
@@ -380,7 +418,17 @@ export const ProductsGetListDocument = new TypedDocumentString(`
       category_name
     }
     product_items {
+      id
       price
+      SKU
+      qty_in_stock
+      product_images
+      product_configurations {
+        variation_option {
+          id
+          value
+        }
+      }
     }
   }
 }

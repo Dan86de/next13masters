@@ -1,6 +1,9 @@
+import { getCategoryByName } from "@/app/api/categories";
 import { getProductById } from "@/app/api/products";
 import { AddToCartForm } from "@/components/AddToCartForm";
+import { SupportedColors } from "@/components/ProductColorPicker";
 import { ProductReviews } from "@/components/ProductReviews";
+import { SupportedSizes } from "@/components/ProductSizePicker";
 import { SuggestedProducts } from "@/components/SuggestedProducts";
 import { cn, formatMoney } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
@@ -45,14 +48,43 @@ export default async function SingleProductPage({
 	if (!product) {
 		return <div>There is no product with this id.</div>;
 	}
+	const category = await getCategoryByName(product.category);
 
-	// async function addToCartAction(formData: FormData) {
-	// 	"use server";
-	// 	console.log(category);
-	// 	console.log("params", params.productId);
-	// 	console.log(formData);
-	// 	console.log("add to cart");
-	// }
+	const sizeVariationOptions =
+		category.variations.filter((variation) => variation.name === "size").length > 0
+			? category.variations.filter((variation) => variation.name === "size")[0].variation_options
+			: [];
+
+	let selectedColor = searchParams.color;
+	let selectedSize = searchParams.size;
+	if (!Object.values(SupportedColors).includes(selectedColor as SupportedColors)) {
+		selectedColor = SupportedColors.white;
+	}
+	if (
+		!Object.values(SupportedSizes).includes(selectedSize as SupportedSizes) &&
+		sizeVariationOptions.length
+	) {
+		if (sizeVariationOptions[0].value === "XXS") {
+			selectedSize = SupportedSizes.XXS;
+		} else {
+			selectedSize = SupportedSizes._36;
+		}
+	}
+	const selectedVariant = product?.product_items.find((item) => {
+		if (selectedColor && selectedSize) {
+			return item.SKU === `${selectedSize.toUpperCase()}_${selectedColor.toUpperCase()}`;
+		} else if (selectedColor) {
+			return item.SKU === `${selectedColor.toUpperCase()}`;
+		} else {
+			item.SKU === `${selectedSize.toUpperCase()}`;
+		}
+	});
+
+	if (!selectedVariant) {
+		return <div>There is no product with this id.</div>;
+	}
+
+	console.log(selectedVariant.images);
 
 	return (
 		<main className="mx-auto mt-8 max-w-2xl px-4 pb-16 sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">
@@ -60,7 +92,9 @@ export default async function SingleProductPage({
 				<div className="lg:col-span-5 lg:col-start-8">
 					<div className="flex justify-between">
 						<h1 className="text-xl font-medium text-zinc-900">{product.name}</h1>
-						<p className="text-xl font-medium text-zinc-900">{formatMoney(product.price / 100)}</p>
+						<p className="text-xl font-medium text-zinc-900">
+							{formatMoney(selectedVariant.price / 100)}
+						</p>
 					</div>
 					{/* Reviews */}
 					<div className="mt-4">
@@ -102,7 +136,7 @@ export default async function SingleProductPage({
 						width={696}
 						height={696}
 						key={product.image.alt}
-						src={product.image.src}
+						src={selectedVariant.images[0]}
 						alt={product.image.alt}
 						className={cn(true ? "lg:col-span-2 lg:row-span-2" : "hidden lg:block", "rounded-lg")}
 					/>
@@ -113,7 +147,9 @@ export default async function SingleProductPage({
 						params={params}
 						productCategory={product.category}
 						searchParams={searchParams}
+						selectedVariant={selectedVariant}
 					/>
+					<p>{`Still ${selectedVariant.quantityInStock} items in stock.`}</p>
 
 					{/* Product details */}
 					<div className="mt-10">

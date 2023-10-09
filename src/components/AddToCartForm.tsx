@@ -1,31 +1,32 @@
 import { getCategoryByName } from "@/app/api/categories";
+import { addToCartAction } from "@/app/cart/actions";
 import { ProductColorPicker } from "@/components/ProductColorPicker";
 import { ProductSizePicker } from "@/components/ProductSizePicker";
 import { Button } from "@/components/ui/button";
+import { ProductItem } from "@/model/productItem";
 
 export const AddToCartForm = async ({
 	params,
 	searchParams,
 	productCategory,
+	selectedVariant,
 }: {
 	params: { productId: string };
 	searchParams: { color: string; size: string };
 	productCategory: string;
+	selectedVariant: ProductItem;
 }) => {
 	const category = await getCategoryByName(productCategory);
+	const colorOptions = category.variations.filter((variation) => variation.name === "color");
+	const sizeOptions = category.variations.filter((variation) => variation.name === "size");
 
-	async function addToCartAction(formData: FormData) {
-		"use server";
-		console.log(category);
-		console.log("params", params.productId);
-		console.log(formData);
-		console.log("add to cart");
-	}
+	const addToCartActionWithSelectedItem = addToCartAction.bind(null, selectedVariant);
 
 	return (
-		<form action={addToCartAction}>
+		<form action={addToCartActionWithSelectedItem}>
+			<input type="hidden" value={params.productId} name="productId" />
 			{/* Color picker */}
-			{category.variations.filter((variation) => variation.name === "color").length > 0 && (
+			{colorOptions.length > 0 && (
 				<ProductColorPicker
 					currentColor={searchParams.color}
 					currentSize={searchParams.size}
@@ -37,7 +38,7 @@ export const AddToCartForm = async ({
 			)}
 
 			{/* Size picker */}
-			{category.variations.filter((variation) => variation.name === "size").length > 0 && (
+			{sizeOptions.length > 0 && (
 				<ProductSizePicker
 					currentColor={searchParams.color}
 					currentSize={searchParams.size}

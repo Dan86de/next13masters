@@ -72,13 +72,13 @@ export const ProductColorPicker = ({
 }) => {
 	let selectedColor = currentColor;
 	if (!Object.values(SupportedColors).includes(selectedColor as SupportedColors)) {
-		selectedColor = SupportedColors.black;
+		selectedColor = SupportedColors.white;
 	}
 
 	return (
 		<div className="grow-1">
 			<h2 className="text-sm font-medium text-zinc-900">Color</h2>
-			<RadioGroup value={selectedColor} className="mt-2" name="size">
+			<RadioGroup value={selectedColor} className="mt-2" name="color">
 				<Label className="sr-only">Choose a size</Label>
 				<div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
 					{colorVariationOptions.map((option) => (

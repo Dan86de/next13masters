@@ -33,14 +33,6 @@ export const ProductSizePicker = ({
 }) => {
 	let selectedSize = currentSize;
 
-	if (!Object.values(SupportedSizes).includes(selectedSize as SupportedSizes)) {
-		if (sizeVariationOptions[0].value === "XXS") {
-			selectedSize = SupportedSizes.XXS;
-		} else {
-			selectedSize = SupportedSizes._36;
-		}
-	}
-
 	return (
 		<div className="mt-8">
 			<div className="flex items-center justify-between">

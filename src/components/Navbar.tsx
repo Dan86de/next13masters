@@ -47,10 +47,12 @@ export const Navbar = async () => {
 					</ActiveLink>
 				))}
 			</ul>
-			<Button variant={"ghost"} className="flex gap-1 px-2">
-				<LucideShoppingBag className={clsx("h-6 w-6 ")} />
-				<span>{numOfItemsInBag}</span>
-			</Button>
+			<Link href={"/cart"}>
+				<Button variant={"ghost"} className="flex gap-1 px-2">
+					<LucideShoppingBag className={clsx("h-6 w-6 ")} />
+					<span>{numOfItemsInBag}</span>
+				</Button>
+			</Link>
 		</nav>
 	);
 };

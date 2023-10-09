@@ -55,6 +55,14 @@ export const getProductsList = async (skip?: number, take?: number): Promise<Pro
 			alt: product.name,
 		},
 		price: product.product_items[0].price,
+		product_items: product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	}));
 };
 
@@ -73,6 +81,14 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 			alt: graphqlResponse.product.name,
 		},
 		price: graphqlResponse.product.product_items[0].price,
+		product_items: graphqlResponse.product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: graphqlResponse.product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	};
 };
 
@@ -91,6 +107,14 @@ export const getProductsByCategoryId = async (categoryId: string): Promise<Produ
 			alt: product.name,
 		},
 		price: product.product_items[0].price,
+		product_items: product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	}));
 };
 
@@ -109,6 +133,14 @@ export const getProductsByCollectionId = async (collectionId: string): Promise<P
 			alt: product.name,
 		},
 		price: product.product_items[0].price,
+		product_items: product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	}));
 };
 
@@ -127,5 +159,13 @@ export const getProductsByName = async (name: string): Promise<Product[]> => {
 			alt: product.name,
 		},
 		price: product.product_items[0].price,
+		product_items: product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	}));
 };
