@@ -23,6 +23,9 @@ const documents = {
     "query ProductGetByCategoryId($categoryId: ID!) {\n  productsFromCategory(categoryId: $categoryId) {\n    id\n    name\n    description\n    product_image\n    category {\n      category_name\n    }\n    product_items {\n      id\n      price\n      SKU\n      qty_in_stock\n      product_images\n      product_configurations {\n        variation_option {\n          id\n          value\n        }\n      }\n    }\n  }\n}": types.ProductGetByCategoryIdDocument,
     "query ProductsByName($name: String!) {\n  productsByName(name: $name) {\n    id\n    name\n    description\n    product_image\n    category {\n      id\n      category_name\n    }\n    product_items {\n      id\n      price\n      SKU\n      qty_in_stock\n      product_images\n      product_configurations {\n        variation_option {\n          id\n          value\n        }\n      }\n    }\n  }\n}": types.ProductsByNameDocument,
     "query ProductsGetList($skip: Int, $take: Int) {\n  products(skip: $skip, take: $take) {\n    id\n    name\n    description\n    product_image\n    category {\n      id\n      category_name\n    }\n    product_items {\n      id\n      price\n      SKU\n      qty_in_stock\n      product_images\n      product_configurations {\n        variation_option {\n          id\n          value\n        }\n      }\n    }\n  }\n}": types.ProductsGetListDocument,
+    "mutation ShoppingCartAddItem($cartId: String!, $productItemId: String!) {\n  addToCart(cartId: $cartId, productItemId: $productItemId) {\n    id\n  }\n}": types.ShoppingCartAddItemDocument,
+    "mutation ShoppingCartCreate($userId: String!) {\n  createShoppingCart(userId: $userId) {\n    id\n    shopping_cart_item {\n      id\n      qty\n      product_item_id\n    }\n  }\n}": types.ShoppingCartCreateDocument,
+    "query ShoppingCartGetById($cartId: ID!) {\n  shoppingCartGetByCartId(cartId: $cartId) {\n    id\n    shopping_cart_item {\n      id\n      product_item {\n        id\n      }\n      qty\n    }\n  }\n}": types.ShoppingCartGetByIdDocument,
 };
 
 /**
@@ -61,6 +64,18 @@ export function graphql(source: "query ProductsByName($name: String!) {\n  produ
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query ProductsGetList($skip: Int, $take: Int) {\n  products(skip: $skip, take: $take) {\n    id\n    name\n    description\n    product_image\n    category {\n      id\n      category_name\n    }\n    product_items {\n      id\n      price\n      SKU\n      qty_in_stock\n      product_images\n      product_configurations {\n        variation_option {\n          id\n          value\n        }\n      }\n    }\n  }\n}"): typeof import('./graphql').ProductsGetListDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation ShoppingCartAddItem($cartId: String!, $productItemId: String!) {\n  addToCart(cartId: $cartId, productItemId: $productItemId) {\n    id\n  }\n}"): typeof import('./graphql').ShoppingCartAddItemDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation ShoppingCartCreate($userId: String!) {\n  createShoppingCart(userId: $userId) {\n    id\n    shopping_cart_item {\n      id\n      qty\n      product_item_id\n    }\n  }\n}"): typeof import('./graphql').ShoppingCartCreateDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query ShoppingCartGetById($cartId: ID!) {\n  shoppingCartGetByCartId(cartId: $cartId) {\n    id\n    shopping_cart_item {\n      id\n      product_item {\n        id\n      }\n      qty\n    }\n  }\n}"): typeof import('./graphql').ShoppingCartGetByIdDocument;
 
 
 export function graphql(source: string) {

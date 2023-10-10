@@ -20,7 +20,10 @@ export const AddToCartForm = async ({
 	const colorOptions = category.variations.filter((variation) => variation.name === "color");
 	const sizeOptions = category.variations.filter((variation) => variation.name === "size");
 
-	const addToCartActionWithSelectedItem = addToCartAction.bind(null, selectedVariant);
+	const addToCartActionWithSelectedItem = addToCartAction.bind(null, {
+		selectedVariant,
+		userId: "6f45312c-270c-4dd1-b8b3-106ff53907d6",
+	});
 
 	return (
 		<form action={addToCartActionWithSelectedItem}>

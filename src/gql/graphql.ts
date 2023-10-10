@@ -26,12 +26,25 @@ export type Collection = {
 };
 
 export type Mutation = {
+  addToCart?: Maybe<ShoppingCart>;
   createProduct?: Maybe<Product>;
+  createShoppingCart?: Maybe<ShoppingCart>;
+};
+
+
+export type MutationAddToCartArgs = {
+  cartId: Scalars['String']['input'];
+  productItemId: Scalars['String']['input'];
 };
 
 
 export type MutationCreateProductArgs = {
   createProductInput: Scalars['String']['input'];
+};
+
+
+export type MutationCreateShoppingCartArgs = {
+  userId: Scalars['String']['input'];
 };
 
 /** Product model. */
@@ -96,8 +109,6 @@ export type Query = {
   collections: Array<Collection>;
   /** Get single product by ID */
   product?: Maybe<Product>;
-  /** Get product item from given variation option id (or two for now). */
-  productItemFromGivenVariationOptions?: Maybe<Array<ProductItem>>;
   /** Get all products */
   products: Array<Product>;
   /** Search products by name */
@@ -106,6 +117,12 @@ export type Query = {
   productsFromCategory?: Maybe<Array<Product>>;
   /** Get all products from collection with given id. */
   productsFromCollection?: Maybe<Array<Product>>;
+  /** Get single cart by ID */
+  shoppingCartGetByCartId?: Maybe<ShoppingCart>;
+  /** Get single cart by user ID */
+  shoppingCartGetByUserId?: Maybe<ShoppingCart>;
+  /** Get all shopping carts */
+  shoppingCarts: Array<ShoppingCart>;
 };
 
 
@@ -136,12 +153,6 @@ export type QueryProductArgs = {
 };
 
 
-export type QueryProductItemFromGivenVariationOptionsArgs = {
-  secondVariationOptionId?: InputMaybe<Scalars['ID']['input']>;
-  variationOptionId: Scalars['ID']['input'];
-};
-
-
 export type QueryProductsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -160,6 +171,41 @@ export type QueryProductsFromCategoryArgs = {
 
 export type QueryProductsFromCollectionArgs = {
   collectionId: Scalars['ID']['input'];
+};
+
+
+export type QueryShoppingCartGetByCartIdArgs = {
+  cartId: Scalars['ID']['input'];
+};
+
+
+export type QueryShoppingCartGetByUserIdArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryShoppingCartsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Shopping cart model. */
+export type ShoppingCart = {
+  /** Shopping cart id. */
+  id: Scalars['ID']['output'];
+  shopping_cart_item: Array<ShoppingCartItem>;
+  /** User id. */
+  userId: Scalars['String']['output'];
+};
+
+/** Shopping cart item model. */
+export type ShoppingCartItem = {
+  cart_id: Scalars['String']['output'];
+  /** Shopping cart item id. */
+  id: Scalars['ID']['output'];
+  product_item: ProductItem;
+  product_item_id: Scalars['String']['output'];
+  qty: Scalars['Float']['output'];
 };
 
 export type Variation = {
@@ -239,6 +285,28 @@ export type ProductsGetListQueryVariables = Exact<{
 
 
 export type ProductsGetListQuery = { products: Array<{ id: string, name: string, description: string, product_image: string, category: { id: string, category_name: string }, product_items: Array<{ id: string, price: number, SKU: string, qty_in_stock: number, product_images: Array<string>, product_configurations?: Array<{ variation_option: { id: string, value: string } }> | null }> }> };
+
+export type ShoppingCartAddItemMutationVariables = Exact<{
+  cartId: Scalars['String']['input'];
+  productItemId: Scalars['String']['input'];
+}>;
+
+
+export type ShoppingCartAddItemMutation = { addToCart?: { id: string } | null };
+
+export type ShoppingCartCreateMutationVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type ShoppingCartCreateMutation = { createShoppingCart?: { id: string, shopping_cart_item: Array<{ id: string, qty: number, product_item_id: string }> } | null };
+
+export type ShoppingCartGetByIdQueryVariables = Exact<{
+  cartId: Scalars['ID']['input'];
+}>;
+
+
+export type ShoppingCartGetByIdQuery = { shoppingCartGetByCartId?: { id: string, shopping_cart_item: Array<{ id: string, qty: number, product_item: { id: string } }> } | null };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -433,3 +501,36 @@ export const ProductsGetListDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ProductsGetListQuery, ProductsGetListQueryVariables>;
+export const ShoppingCartAddItemDocument = new TypedDocumentString(`
+    mutation ShoppingCartAddItem($cartId: String!, $productItemId: String!) {
+  addToCart(cartId: $cartId, productItemId: $productItemId) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<ShoppingCartAddItemMutation, ShoppingCartAddItemMutationVariables>;
+export const ShoppingCartCreateDocument = new TypedDocumentString(`
+    mutation ShoppingCartCreate($userId: String!) {
+  createShoppingCart(userId: $userId) {
+    id
+    shopping_cart_item {
+      id
+      qty
+      product_item_id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ShoppingCartCreateMutation, ShoppingCartCreateMutationVariables>;
+export const ShoppingCartGetByIdDocument = new TypedDocumentString(`
+    query ShoppingCartGetById($cartId: ID!) {
+  shoppingCartGetByCartId(cartId: $cartId) {
+    id
+    shopping_cart_item {
+      id
+      product_item {
+        id
+      }
+      qty
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ShoppingCartGetByIdQuery, ShoppingCartGetByIdQueryVariables>;

@@ -1,0 +1,12 @@
+query ShoppingCartGetById($cartId: ID!) {
+	shoppingCartGetByCartId(cartId: $cartId) {
+		id
+		shopping_cart_item {
+			id
+			product_item {
+				id
+			}
+			qty
+		}
+	}
+}
