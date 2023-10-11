@@ -1,0 +1,18 @@
+mutation ShoppingCartAddFirstItem($cartId: String!, $productItemId: String!) {
+	addToEmptyCart(cartId: $cartId, productItemId: $productItemId) {
+		id
+		shopping_cart_item {
+			id
+			qty
+			product_item_id
+			product_item {
+				id
+				product_id
+				product_images
+				qty_in_stock
+				price
+				SKU
+			}
+		}
+	}
+}

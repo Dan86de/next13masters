@@ -3,8 +3,15 @@ query ShoppingCartGetById($cartId: ID!) {
 		id
 		shopping_cart_item {
 			id
+			cart_id
+			product_item_id
 			product_item {
 				id
+				product_id
+				SKU
+				qty_in_stock
+				price
+				product_images
 			}
 			qty
 		}
