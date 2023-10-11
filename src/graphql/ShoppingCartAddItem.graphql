@@ -1,0 +1,19 @@
+mutation ShoppingCartAddItem($cartId: String!, $cartItemId: String!, $qty: Int) {
+	addItemToCart(cartId: $cartId, cartItemId: $cartItemId, qty: $qty) {
+		id
+		shopping_cart_item {
+			id
+			cart_id
+			product_item_id
+			qty
+			product_item {
+				id
+				product_id
+				SKU
+				qty_in_stock
+				price
+				product_images
+			}
+		}
+	}
+}

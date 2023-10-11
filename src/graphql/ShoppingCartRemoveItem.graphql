@@ -1,5 +1,5 @@
-mutation ShoppingCartUpdateQtyForItem($cartId: String!, $cartItemId: String!, $qty: Int) {
-	updateQtyForCartItem(cartId: $cartId, cartItemId: $cartItemId, qty: $qty) {
+mutation ShoppingCartRemoveItem($cartId: String!, $shoppingCartItemId: String!) {
+	removeItemFromCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {
 		id
 		shopping_cart_item {
 			id

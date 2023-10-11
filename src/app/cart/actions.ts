@@ -1,9 +1,15 @@
 "use server";
 
 import { ProductItem } from "@/model/productItem";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { addToEmptyCart, createShoppingCart, getShoppingCartByCartId } from "../api/shopping-cart";
+import {
+	addItemToCart,
+	createShoppingCart,
+	getShoppingCartByCartId,
+	removeItemFromCart,
+} from "../api/shopping-cart";
 
 export async function addToCartAction({
 	selectedVariant,
@@ -12,17 +18,38 @@ export async function addToCartAction({
 	selectedVariant: ProductItem;
 	userId: string;
 }) {
-	await getOrCreateCart(userId, selectedVariant.id);
+	const cart = await getOrCreateCart(userId);
+
+	if (!cart) {
+		throw new Error("Something went wrong with cart creation/check process.");
+	}
+
+	console.log(cart);
+
+	await addItemToCart(cart.id, selectedVariant.id);
 
 	redirect("/cart");
 }
 
-async function getOrCreateCart(userId: string, productItemId: string) {
+export async function removeCartItem({
+	cartId,
+	productItemId,
+}: {
+	cartId: string;
+	productItemId: string;
+}) {
+	await removeItemFromCart(cartId, productItemId);
+
+	revalidatePath("/cart");
+}
+
+async function getOrCreateCart(userId: string) {
 	const cartId = cookies().get("cartId")?.value;
 	if (cartId) {
 		return getShoppingCartByCartId(cartId);
 	} else {
 		const cart = await createShoppingCart(userId);
-		return await addToEmptyCart(cart.id, productItemId);
+		cookies().set("cartId", cart.id);
+		return cart;
 	}
 }

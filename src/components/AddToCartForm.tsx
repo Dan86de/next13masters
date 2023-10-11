@@ -22,6 +22,7 @@ export const AddToCartForm = async ({
 
 	const addToCartActionWithSelectedItem = addToCartAction.bind(null, {
 		selectedVariant,
+		// TODO: think about user flow in app
 		userId: "6f45312c-270c-4dd1-b8b3-106ff53907d6",
 	});
 

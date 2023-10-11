@@ -1,58 +1,70 @@
-import { LucideShieldQuestion } from "lucide-react";
+import { RemoveItemFromCartBtn } from "@/components/RemoveItemFromCart";
+import { Button } from "@/components/ui/button";
+import { LucideCheck, LucideClock, LucideShieldQuestion } from "lucide-react";
+import { cookies } from "next/headers";
+import Image from "next/image";
+import { getShoppingCartByCartId } from "../api/shopping-cart";
 
 export default async function CartPage() {
+	const cartId = cookies().get("cartId")?.value;
+	if (!cartId) {
+		return <div>There is no card with this id.</div>;
+	}
+	const cart = await getShoppingCartByCartId(cartId);
 	return (
 		<main className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
 			<h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">Shopping Cart</h1>
 
-			<form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+			<div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
 				<section aria-labelledby="cart-heading" className="lg:col-span-7">
 					<h2 id="cart-heading" className="sr-only">
 						Items in your shopping cart
 					</h2>
 
-					{/* <ul role="list" className="divide-y divide-zinc-200 border-b border-t border-zinc-200">
-						{products.map((product, productIdx) => (
-							<li key={product.id} className="flex py-6 sm:py-10">
+					<ul role="list" className="divide-y divide-zinc-200 border-b border-t border-zinc-200">
+						{cart?.shoppingCartItems.map((cartItem, cartItemIdx) => (
+							<li key={cartItem.id} className="flex py-6 sm:py-10">
 								<div className="flex-shrink-0">
-									<img
-										src={product.imageSrc}
-										alt={product.imageAlt}
+									<Image
+										width={300}
+										height={300}
+										src={cartItem.productItem.images[0]}
+										alt={cartItem.id}
 										className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
 									/>
 								</div>
 
 								<div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
 									<div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
-										<div>
+										{/* <div>
 											<div className="flex justify-between">
 												<h3 className="text-sm">
 													<a
-														href={product.href}
+														href={cartItem.productItem.images[0]}
 														className="font-medium text-zinc-700 hover:text-zinc-800"
 													>
-														{product.name}
+														{cartItem.name}
 													</a>
 												</h3>
 											</div>
 											<div className="mt-1 flex text-sm">
-												<p className="text-zinc-500">{product.color}</p>
-												{product.size ? (
+												<p className="text-zinc-500">{cartItem.color}</p>
+												{cartItem.size ? (
 													<p className="ml-4 border-l border-zinc-200 pl-4 text-zinc-500">
-														{product.size}
+														{cartItem.size}
 													</p>
 												) : null}
 											</div>
-											<p className="mt-1 text-sm font-medium text-zinc-900">{product.price}</p>
-										</div>
+											<p className="mt-1 text-sm font-medium text-zinc-900">{cartItem.price}</p>
+										</div> */}
 
 										<div className="mt-4 sm:mt-0 sm:pr-9">
-											<label htmlFor={`quantity-${productIdx}`} className="sr-only">
-												Quantity, {product.name}
+											<label htmlFor={`quantity-${cartItemIdx}`} className="sr-only">
+												Quantity, {cartItem.productItem.SKU}
 											</label>
 											<select
-												id={`quantity-${productIdx}`}
-												name={`quantity-${productIdx}`}
+												id={`quantity-${cartItemIdx}`}
+												name={`quantity-${cartItemIdx}`}
 												className="max-w-full rounded-md border border-zinc-300 py-1.5 text-left text-base font-medium leading-5 text-zinc-700 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 sm:text-sm"
 											>
 												<option value={1}>1</option>
@@ -65,37 +77,31 @@ export default async function CartPage() {
 												<option value={8}>8</option>
 											</select>
 
-											<div className="absolute right-0 top-0">
-												<button
-													type="button"
-													className="-m-2 inline-flex p-2 text-zinc-400 hover:text-zinc-500"
-												>
-													<span className="sr-only">Remove</span>
-													<XMarkIconMini className="h-5 w-5" aria-hidden="true" />
-												</button>
-											</div>
+											<RemoveItemFromCartBtn cartId={cartId} cartItemId={cartItem.id} />
 										</div>
 									</div>
 
 									<p className="mt-4 flex space-x-2 text-sm text-zinc-700">
-										{product.inStock ? (
-											<CheckIcon
+										{cartItem.productItem.quantityInStock ? (
+											<LucideCheck
 												className="h-5 w-5 flex-shrink-0 text-green-500"
 												aria-hidden="true"
 											/>
 										) : (
-											<ClockIcon
+											<LucideClock
 												className="h-5 w-5 flex-shrink-0 text-zinc-300"
 												aria-hidden="true"
 											/>
 										)}
 
-										<span>{product.inStock ? "In stock" : `Ships in ${product.leadTime}`}</span>
+										<span>
+											{cartItem.productItem.quantityInStock ? "In stock" : `Ships in 3-4 weeks`}
+										</span>
 									</p>
 								</div>
 							</li>
 						))}
-					</ul> */}
+					</ul>
 				</section>
 
 				{/* Order summary */}
@@ -139,15 +145,17 @@ export default async function CartPage() {
 					</dl>
 
 					<div className="mt-6">
-						<button
+						<Button
+							variant={"default"}
+							size={"lg"}
 							type="submit"
 							className="w-full rounded-md border border-transparent bg-orange-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-zinc-50"
 						>
 							Checkout
-						</button>
+						</Button>
 					</div>
 				</section>
-			</form>
+			</div>
 
 			{/* Related products */}
 			{/* <section aria-labelledby="related-heading" className="mt-24">
