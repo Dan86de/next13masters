@@ -1,5 +1,9 @@
+import { DecrementQtyBtn } from "@/components/DecrementQtyButton";
+import { IncrementQtyBtn } from "@/components/IncrementQtyButton";
 import { RemoveItemFromCartBtn } from "@/components/RemoveItemFromCart";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { LucideCheck, LucideClock, LucideShieldQuestion } from "lucide-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
@@ -59,23 +63,14 @@ export default async function CartPage() {
 										</div> */}
 
 										<div className="mt-4 sm:mt-0 sm:pr-9">
-											<label htmlFor={`quantity-${cartItemIdx}`} className="sr-only">
-												Quantity, {cartItem.productItem.SKU}
-											</label>
-											<select
-												id={`quantity-${cartItemIdx}`}
-												name={`quantity-${cartItemIdx}`}
-												className="max-w-full rounded-md border border-zinc-300 py-1.5 text-left text-base font-medium leading-5 text-zinc-700 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 sm:text-sm"
-											>
-												<option value={1}>1</option>
-												<option value={2}>2</option>
-												<option value={3}>3</option>
-												<option value={4}>4</option>
-												<option value={5}>5</option>
-												<option value={6}>6</option>
-												<option value={7}>7</option>
-												<option value={8}>8</option>
-											</select>
+											<div className="flex items-center gap-2">
+												<Label htmlFor={`quantity-${cartItemIdx}`} className="sr-only">
+													Quantity, {cartItem.qty}
+												</Label>
+												<DecrementQtyBtn cartId={cart.id} shoppingCartItemId={cartItem.id} />
+												<Input type="text" defaultValue={cartItem.qty} data-testid="quantity" />
+												<IncrementQtyBtn cartId={cart.id} productItemId={cartItem.productItem.id} />
+											</div>
 
 											<RemoveItemFromCartBtn cartId={cartId} cartItemId={cartItem.id} />
 										</div>

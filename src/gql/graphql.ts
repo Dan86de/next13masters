@@ -29,6 +29,7 @@ export type Mutation = {
   addItemToCart?: Maybe<ShoppingCartWithItems>;
   createProduct?: Maybe<Product>;
   createShoppingCart?: Maybe<ShoppingCart>;
+  reduceItemQtyInCart?: Maybe<ShoppingCartWithItems>;
   removeItemFromCart?: Maybe<ShoppingCartWithItems>;
 };
 
@@ -47,6 +48,12 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateShoppingCartArgs = {
   userId: Scalars['String']['input'];
+};
+
+
+export type MutationReduceItemQtyInCartArgs = {
+  cartId: Scalars['String']['input'];
+  shoppingCartItemId: Scalars['String']['input'];
 };
 
 
@@ -321,6 +328,14 @@ export type ShoppingCartGetByIdQueryVariables = Exact<{
 
 export type ShoppingCartGetByIdQuery = { shoppingCartGetByCartId?: { id: string, shopping_cart_item: Array<{ id: string, cart_id: string, product_item_id: string, qty: number, product_item: { id: string, product_id: string, SKU: string, qty_in_stock: number, price: number, product_images: Array<string> } }> } | null };
 
+export type ShoppingCartReduceItemQtyMutationVariables = Exact<{
+  cartId: Scalars['String']['input'];
+  shoppingCartItemId: Scalars['String']['input'];
+}>;
+
+
+export type ShoppingCartReduceItemQtyMutation = { reduceItemQtyInCart?: { id: string, shopping_cart_item: Array<{ id: string, cart_id: string, product_item_id: string, qty: number, product_item: { id: string, product_id: string, SKU: string, qty_in_stock: number, price: number, product_images: Array<string> } }> } | null };
+
 export type ShoppingCartRemoveItemMutationVariables = Exact<{
   cartId: Scalars['String']['input'];
   shoppingCartItemId: Scalars['String']['input'];
@@ -571,6 +586,27 @@ export const ShoppingCartGetByIdDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ShoppingCartGetByIdQuery, ShoppingCartGetByIdQueryVariables>;
+export const ShoppingCartReduceItemQtyDocument = new TypedDocumentString(`
+    mutation ShoppingCartReduceItemQty($cartId: String!, $shoppingCartItemId: String!) {
+  reduceItemQtyInCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {
+    id
+    shopping_cart_item {
+      id
+      cart_id
+      product_item_id
+      qty
+      product_item {
+        id
+        product_id
+        SKU
+        qty_in_stock
+        price
+        product_images
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ShoppingCartReduceItemQtyMutation, ShoppingCartReduceItemQtyMutationVariables>;
 export const ShoppingCartRemoveItemDocument = new TypedDocumentString(`
     mutation ShoppingCartRemoveItem($cartId: String!, $shoppingCartItemId: String!) {
   removeItemFromCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {

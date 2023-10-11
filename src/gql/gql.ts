@@ -26,6 +26,7 @@ const documents = {
     "mutation ShoppingCartAddItem($cartId: String!, $cartItemId: String!, $qty: Int) {\n  addItemToCart(cartId: $cartId, cartItemId: $cartItemId, qty: $qty) {\n    id\n    shopping_cart_item {\n      id\n      cart_id\n      product_item_id\n      qty\n      product_item {\n        id\n        product_id\n        SKU\n        qty_in_stock\n        price\n        product_images\n      }\n    }\n  }\n}": types.ShoppingCartAddItemDocument,
     "mutation ShoppingCartCreate($userId: String!) {\n  createShoppingCart(userId: $userId) {\n    id\n  }\n}": types.ShoppingCartCreateDocument,
     "query ShoppingCartGetById($cartId: ID!) {\n  shoppingCartGetByCartId(cartId: $cartId) {\n    id\n    shopping_cart_item {\n      id\n      cart_id\n      product_item_id\n      product_item {\n        id\n        product_id\n        SKU\n        qty_in_stock\n        price\n        product_images\n      }\n      qty\n    }\n  }\n}": types.ShoppingCartGetByIdDocument,
+    "mutation ShoppingCartReduceItemQty($cartId: String!, $shoppingCartItemId: String!) {\n  reduceItemQtyInCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {\n    id\n    shopping_cart_item {\n      id\n      cart_id\n      product_item_id\n      qty\n      product_item {\n        id\n        product_id\n        SKU\n        qty_in_stock\n        price\n        product_images\n      }\n    }\n  }\n}": types.ShoppingCartReduceItemQtyDocument,
     "mutation ShoppingCartRemoveItem($cartId: String!, $shoppingCartItemId: String!) {\n  removeItemFromCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {\n    id\n    shopping_cart_item {\n      id\n      cart_id\n      product_item_id\n      qty\n      product_item {\n        id\n        product_id\n        SKU\n        qty_in_stock\n        price\n        product_images\n      }\n    }\n  }\n}": types.ShoppingCartRemoveItemDocument,
 };
 
@@ -77,6 +78,10 @@ export function graphql(source: "mutation ShoppingCartCreate($userId: String!) {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query ShoppingCartGetById($cartId: ID!) {\n  shoppingCartGetByCartId(cartId: $cartId) {\n    id\n    shopping_cart_item {\n      id\n      cart_id\n      product_item_id\n      product_item {\n        id\n        product_id\n        SKU\n        qty_in_stock\n        price\n        product_images\n      }\n      qty\n    }\n  }\n}"): typeof import('./graphql').ShoppingCartGetByIdDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation ShoppingCartReduceItemQty($cartId: String!, $shoppingCartItemId: String!) {\n  reduceItemQtyInCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {\n    id\n    shopping_cart_item {\n      id\n      cart_id\n      product_item_id\n      qty\n      product_item {\n        id\n        product_id\n        SKU\n        qty_in_stock\n        price\n        product_images\n      }\n    }\n  }\n}"): typeof import('./graphql').ShoppingCartReduceItemQtyDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

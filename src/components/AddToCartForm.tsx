@@ -53,7 +53,7 @@ export const AddToCartForm = async ({
 				/>
 			)}
 
-			<Button variant={"default"} className="mt-4 w-full">
+			<Button variant={"default"} className="mt-4 w-full" data-testid="add-to-cart-button">
 				Add to cart
 			</Button>
 		</form>

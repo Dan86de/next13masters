@@ -2,6 +2,7 @@ import {
 	ShoppingCartAddItemDocument,
 	ShoppingCartCreateDocument,
 	ShoppingCartGetByIdDocument,
+	ShoppingCartReduceItemQtyDocument,
 	ShoppingCartRemoveItemDocument,
 } from "@/gql/graphql";
 import { ShoppingCart, ShoppingCartWithItems } from "@/model/shoppingCart";
@@ -20,9 +21,16 @@ export const createShoppingCart = async (userId: string): Promise<ShoppingCart> 
 export const getShoppingCartByCartId = async (
 	cartId: string,
 ): Promise<ShoppingCartWithItems | null> => {
-	const graphqlResponse = await executeGraphql(ShoppingCartGetByIdDocument, {
-		cartId,
-	});
+	const graphqlResponse = await executeGraphql(
+		ShoppingCartGetByIdDocument,
+		{
+			cartId,
+		},
+		{
+			tags: ["cart"],
+		},
+		"no-store",
+	);
 
 	if (!graphqlResponse.shoppingCartGetByCartId) {
 		throw new Error("Cart does not exist");
@@ -88,23 +96,58 @@ export const removeItemFromCart = async (
 	});
 
 	if (!graphqlResponse.removeItemFromCart) {
-		throw new Error("There is something wrong with adding item ot cart.");
+		throw new Error("There is something wrong with adding item to cart.");
 	}
 
 	return {
 		id: graphqlResponse.removeItemFromCart.id,
-		shoppingCartItems: graphqlResponse.removeItemFromCart.shopping_cart_item.map((item) => ({
-			id: item.id,
-			productItem: {
-				id: item.product_item.id,
-				images: item.product_item.product_images,
-				price: item.product_item.price,
-				productId: item.product_item_id,
-				SKU: item.product_item.SKU,
-				quantityInStock: item.product_item.qty_in_stock,
-			},
-			productItemId: item.product_item_id,
-			qty: item.qty,
-		})),
+		shoppingCartItems: graphqlResponse.removeItemFromCart.shopping_cart_item.length
+			? graphqlResponse.removeItemFromCart.shopping_cart_item.map((item) => ({
+					id: item.id,
+					productItem: {
+						id: item.product_item.id,
+						images: item.product_item.product_images,
+						price: item.product_item.price,
+						productId: item.product_item_id,
+						SKU: item.product_item.SKU,
+						quantityInStock: item.product_item.qty_in_stock,
+					},
+					productItemId: item.product_item_id,
+					qty: item.qty,
+			  }))
+			: [],
+	};
+};
+
+export const reduceItemQtyInCart = async (
+	cartId: string,
+	shoppingCartItemId: string,
+): Promise<ShoppingCartWithItems | null> => {
+	const graphqlResponse = await executeGraphql(ShoppingCartReduceItemQtyDocument, {
+		cartId,
+		shoppingCartItemId,
+	});
+
+	if (!graphqlResponse.reduceItemQtyInCart) {
+		throw new Error("There is something wrong with removing item from cart.");
+	}
+
+	return {
+		id: graphqlResponse.reduceItemQtyInCart.id,
+		shoppingCartItems: graphqlResponse.reduceItemQtyInCart.shopping_cart_item.length
+			? graphqlResponse.reduceItemQtyInCart.shopping_cart_item.map((item) => ({
+					id: item.id,
+					productItem: {
+						id: item.product_item.id,
+						images: item.product_item.product_images,
+						price: item.product_item.price,
+						productId: item.product_item_id,
+						SKU: item.product_item.SKU,
+						quantityInStock: item.product_item.qty_in_stock,
+					},
+					productItemId: item.product_item_id,
+					qty: item.qty,
+			  }))
+			: [],
 	};
 };

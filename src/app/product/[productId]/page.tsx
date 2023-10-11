@@ -80,11 +80,9 @@ export default async function SingleProductPage({
 		}
 	});
 
-	if (!selectedVariant) {
-		return <div>There is no product with this id.</div>;
-	}
-
-	console.log(selectedVariant.images);
+	// if (!selectedVariant) {
+	// 	return <div>There is no product with this id.</div>;
+	// }
 
 	return (
 		<main className="mx-auto mt-8 max-w-2xl px-4 pb-16 sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">
@@ -93,7 +91,9 @@ export default async function SingleProductPage({
 					<div className="flex justify-between">
 						<h1 className="text-xl font-medium text-zinc-900">{product.name}</h1>
 						<p className="text-xl font-medium text-zinc-900">
-							{formatMoney(selectedVariant.price / 100)}
+							{selectedVariant
+								? formatMoney(selectedVariant.price / 100)
+								: formatMoney(product.price / 100)}
 						</p>
 					</div>
 					{/* Reviews */}
@@ -136,7 +136,7 @@ export default async function SingleProductPage({
 						width={696}
 						height={696}
 						key={product.image.alt}
-						src={selectedVariant.images[0]}
+						src={selectedVariant ? selectedVariant.images[0] : product.image.src}
 						alt={product.image.alt}
 						className={cn(true ? "lg:col-span-2 lg:row-span-2" : "hidden lg:block", "rounded-lg")}
 					/>
@@ -147,9 +147,13 @@ export default async function SingleProductPage({
 						params={params}
 						productCategory={product.category}
 						searchParams={searchParams}
-						selectedVariant={selectedVariant}
+						selectedVariant={selectedVariant ?? product.product_items[0]}
 					/>
-					<p>{`Still ${selectedVariant.quantityInStock} items in stock.`}</p>
+					<p>{`Still ${
+						selectedVariant
+							? selectedVariant.quantityInStock
+							: product.product_items[0].quantityInStock
+					} items in stock.`}</p>
 
 					{/* Product details */}
 					<div className="mt-10">

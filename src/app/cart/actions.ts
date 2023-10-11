@@ -1,13 +1,14 @@
 "use server";
 
 import { ProductItem } from "@/model/productItem";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
 	addItemToCart,
 	createShoppingCart,
 	getShoppingCartByCartId,
+	reduceItemQtyInCart,
 	removeItemFromCart,
 } from "../api/shopping-cart";
 
@@ -24,10 +25,7 @@ export async function addToCartAction({
 		throw new Error("Something went wrong with cart creation/check process.");
 	}
 
-	console.log(cart);
-
 	await addItemToCart(cart.id, selectedVariant.id);
-
 	redirect("/cart");
 }
 
@@ -40,7 +38,29 @@ export async function removeCartItem({
 }) {
 	await removeItemFromCart(cartId, productItemId);
 
-	revalidatePath("/cart");
+	revalidateTag("cart");
+}
+
+export async function incrementItemQtyInCart({
+	cartId,
+	productItemId,
+}: {
+	cartId: string;
+	productItemId: string;
+}) {
+	await addItemToCart(cartId, productItemId);
+	revalidateTag("cart");
+}
+
+export async function decrementItemQtyInCart({
+	cartId,
+	shoppingCartItemId,
+}: {
+	cartId: string;
+	shoppingCartItemId: string;
+}) {
+	await reduceItemQtyInCart(cartId, shoppingCartItemId);
+	revalidateTag("cart");
 }
 
 async function getOrCreateCart(userId: string) {
@@ -50,6 +70,7 @@ async function getOrCreateCart(userId: string) {
 	} else {
 		const cart = await createShoppingCart(userId);
 		cookies().set("cartId", cart.id);
+		revalidateTag("cart");
 		return cart;
 	}
 }
