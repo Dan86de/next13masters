@@ -1,7 +1,7 @@
 "use server";
 
 import { ProductItem } from "@/model/productItem";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
@@ -28,6 +28,7 @@ export async function addToCartAction({
 
 	await addItemToCart(cart.id, selectedVariant.id);
 	revalidatePath("/cart");
+	revalidateTag("cart");
 	redirect("/cart");
 }
 
@@ -40,6 +41,7 @@ export async function removeCartItem({
 }) {
 	await removeItemFromCart(cartId, shoppingCartItemId);
 	revalidatePath("/cart");
+	revalidateTag("cart");
 }
 
 export async function incrementItemQtyInCart(formData: FormData) {
@@ -47,6 +49,7 @@ export async function incrementItemQtyInCart(formData: FormData) {
 
 	await incrementItemQty(shoppingCartItemId);
 	revalidatePath("/cart");
+	revalidateTag("cart");
 }
 
 export async function decrementItemQtyInCart(formData: FormData) {
@@ -55,6 +58,7 @@ export async function decrementItemQtyInCart(formData: FormData) {
 
 	await reduceItemQtyInCart(cartId, shoppingCartItemId);
 	revalidatePath("/cart");
+	revalidateTag("cart");
 }
 
 async function getOrCreateCart(userId: string) {

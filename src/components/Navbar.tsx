@@ -1,6 +1,5 @@
 import { getCategoriesList } from "@/app/api/categories";
 import { ActiveLink } from "@/components/ActiveLink";
-import clsx from "clsx";
 import { LucideShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { UrlObject } from "url";
@@ -49,7 +48,7 @@ export const Navbar = async () => {
 			</ul>
 			<Link href={"/cart"} prefetch={false}>
 				<Button variant={"ghost"} className="flex gap-1 px-2">
-					<LucideShoppingBag className={clsx("h-6 w-6 ")} />
+					<LucideShoppingBag className={"h-6 w-6 "} />
 					<span>{numOfItemsInBag}</span>
 				</Button>
 			</Link>

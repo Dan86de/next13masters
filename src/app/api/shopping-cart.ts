@@ -29,9 +29,7 @@ export const getShoppingCartByCartId = async (
 		},
 		{
 			tags: ["cart"],
-			revalidate: 0,
 		},
-		"no-store",
 	);
 
 	if (!graphqlResponse.shoppingCartGetByCartId) {
