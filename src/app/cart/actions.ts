@@ -37,17 +37,14 @@ export async function removeCartItem({
 	productItemId: string;
 }) {
 	await removeItemFromCart(cartId, productItemId);
-
 	revalidateTag("cart");
 }
 
-export async function incrementItemQtyInCart({
-	cartId,
-	productItemId,
-}: {
-	cartId: string;
-	productItemId: string;
-}) {
+export async function incrementItemQtyInCart(formData: FormData) {
+	const cartId = formData.get("cartId") as string;
+	const productItemId = formData.get("productItemId") as string;
+
+	console.log(cartId, productItemId);
 	await addItemToCart(cartId, productItemId);
 	revalidateTag("cart");
 }
@@ -66,6 +63,7 @@ export async function decrementItemQtyInCart({
 async function getOrCreateCart(userId: string) {
 	const cartId = cookies().get("cartId")?.value;
 	if (cartId) {
+		revalidateTag("cart");
 		return getShoppingCartByCartId(cartId);
 	} else {
 		const cart = await createShoppingCart(userId);

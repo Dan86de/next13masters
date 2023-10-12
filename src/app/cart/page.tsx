@@ -68,7 +68,11 @@ export default async function CartPage() {
 													Quantity, {cartItem.qty}
 												</Label>
 												<DecrementQtyBtn cartId={cart.id} shoppingCartItemId={cartItem.id} />
-												<Input type="text" defaultValue={cartItem.qty} data-testid="quantity" />
+												<Input
+													type="text"
+													defaultValue={cartItem.qty.toString()}
+													data-testid="quantity"
+												/>
 												<IncrementQtyBtn cartId={cart.id} productItemId={cartItem.productItem.id} />
 											</div>
 
