@@ -20,16 +20,18 @@ export async function addToCartAction({
 	selectedVariant: ProductItem;
 	userId: string;
 }) {
+	console.log(selectedVariant);
 	const cart = await getOrCreateCart(userId);
 
 	if (!cart) {
 		throw new Error("Something went wrong with cart creation/check process.");
 	}
 
-	await addItemToCart(cart.id, selectedVariant.id);
-	revalidatePath("/cart");
-	revalidateTag("cart");
-	redirect("/cart");
+	await addItemToCart(cart.id, selectedVariant.id).finally(() => {
+		revalidatePath("/cart");
+		revalidateTag("cart");
+		redirect("/cart");
+	});
 }
 
 export async function removeCartItem({
@@ -39,26 +41,29 @@ export async function removeCartItem({
 	cartId: string;
 	shoppingCartItemId: string;
 }) {
-	await removeItemFromCart(cartId, shoppingCartItemId);
-	revalidatePath("/cart");
-	revalidateTag("cart");
+	await removeItemFromCart(cartId, shoppingCartItemId).finally(() => {
+		revalidatePath("/cart");
+		revalidateTag("cart");
+	});
 }
 
 export async function incrementItemQtyInCart(formData: FormData) {
 	const shoppingCartItemId = formData.get("shoppingCartItemId") as string;
 
-	await incrementItemQty(shoppingCartItemId);
-	revalidatePath("/cart");
-	revalidateTag("cart");
+	await incrementItemQty(shoppingCartItemId).finally(() => {
+		revalidatePath("/cart");
+		revalidateTag("cart");
+	});
 }
 
 export async function decrementItemQtyInCart(formData: FormData) {
 	const cartId = formData.get("cartId") as string;
 	const shoppingCartItemId = formData.get("shoppingCartItemId") as string;
 
-	await reduceItemQtyInCart(cartId, shoppingCartItemId);
-	revalidatePath("/cart");
-	revalidateTag("cart");
+	await reduceItemQtyInCart(cartId, shoppingCartItemId).finally(() => {
+		revalidatePath("/cart");
+		revalidateTag("cart");
+	});
 }
 
 async function getOrCreateCart(userId: string) {

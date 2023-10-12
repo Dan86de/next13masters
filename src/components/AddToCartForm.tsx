@@ -19,7 +19,6 @@ export const AddToCartForm = async ({
 	const category = await getCategoryByName(productCategory);
 	const colorOptions = category.variations.filter((variation) => variation.name === "color");
 	const sizeOptions = category.variations.filter((variation) => variation.name === "size");
-
 	const addToCartActionWithSelectedItem = addToCartAction.bind(null, {
 		selectedVariant,
 		// TODO: think about user flow in app

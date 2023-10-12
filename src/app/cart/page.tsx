@@ -2,7 +2,6 @@ import { DecrementQtyBtn } from "@/components/DecrementQtyButton";
 import { IncrementQtyBtn } from "@/components/IncrementQtyButton";
 import { RemoveItemFromCartBtn } from "@/components/RemoveItemFromCart";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LucideCheck, LucideClock, LucideShieldQuestion } from "lucide-react";
 import { cookies } from "next/headers";
@@ -17,6 +16,7 @@ export default async function CartPage() {
 		return <div>There is no card with this id.</div>;
 	}
 	const cart = await getShoppingCartByCartId(cartId);
+
 	return (
 		<main className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
 			<h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">Shopping Cart</h1>
@@ -70,13 +70,9 @@ export default async function CartPage() {
 													Quantity, {cartItem.qty}
 												</Label>
 												<DecrementQtyBtn cartId={cart.id} shoppingCartItemId={cartItem.id} />
-												<Input
-													type="text"
-													defaultValue={cartItem.qty.toString()}
-													data-testid="quantity"
-													readOnly
-													className="w-12 text-center"
-												/>
+												<div data-testid="quantity" className="w-12 text-center">
+													{cartItem.qty}
+												</div>
 												<IncrementQtyBtn shoppingCartItemId={cartItem.id} />
 											</div>
 

@@ -19,7 +19,7 @@ export const IncrementQtyBtn = ({ shoppingCartItemId }: { shoppingCartItemId: st
 				variant={"ghost"}
 				className="aspect-square"
 				type="submit"
-				data-testid="add-to-cart-button"
+				data-testid="increment"
 			>
 				<LucidePlusSquare />
 			</Button>
