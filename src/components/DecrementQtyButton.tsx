@@ -9,9 +9,15 @@ export const DecrementQtyBtn = ({
 	cartId: string;
 	shoppingCartItemId: string;
 }) => {
-	const decrementQtyBtnAction = decrementItemQtyInCart.bind(null, { cartId, shoppingCartItemId });
 	return (
-		<form action={decrementQtyBtnAction}>
+		<form action={decrementItemQtyInCart}>
+			<input type="text" name="cartId" defaultValue={cartId} className="sr-only" />
+			<input
+				type="text"
+				name="shoppingCartItemId"
+				defaultValue={shoppingCartItemId}
+				className="sr-only"
+			/>
 			<Button
 				data-testid="decrement"
 				size={"icon"}

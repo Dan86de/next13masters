@@ -26,9 +26,10 @@ export type Collection = {
 };
 
 export type Mutation = {
-  addItemToCart?: Maybe<ShoppingCartWithItems>;
+  addItemToCart?: Maybe<ShoppingCartItem>;
   createProduct?: Maybe<Product>;
   createShoppingCart?: Maybe<ShoppingCart>;
+  incrementItemQtyInCart?: Maybe<ShoppingCartWithItems>;
   reduceItemQtyInCart?: Maybe<ShoppingCartWithItems>;
   removeItemFromCart?: Maybe<ShoppingCartWithItems>;
 };
@@ -36,7 +37,7 @@ export type Mutation = {
 
 export type MutationAddItemToCartArgs = {
   cartId: Scalars['String']['input'];
-  cartItemId: Scalars['String']['input'];
+  productItemId: Scalars['String']['input'];
   qty?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -48,6 +49,12 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateShoppingCartArgs = {
   userId: Scalars['String']['input'];
+};
+
+
+export type MutationIncrementItemQtyInCartArgs = {
+  qty?: InputMaybe<Scalars['Int']['input']>;
+  shoppingCartItemId: Scalars['String']['input'];
 };
 
 
@@ -307,12 +314,12 @@ export type ProductsGetListQuery = { products: Array<{ id: string, name: string,
 
 export type ShoppingCartAddItemMutationVariables = Exact<{
   cartId: Scalars['String']['input'];
-  cartItemId: Scalars['String']['input'];
+  productItemId: Scalars['String']['input'];
   qty?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type ShoppingCartAddItemMutation = { addItemToCart?: { id: string, shopping_cart_item: Array<{ id: string, cart_id: string, product_item_id: string, qty: number, product_item: { id: string, product_id: string, SKU: string, qty_in_stock: number, price: number, product_images: Array<string> } }> } | null };
+export type ShoppingCartAddItemMutation = { addItemToCart?: { id: string } | null };
 
 export type ShoppingCartCreateMutationVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -321,6 +328,14 @@ export type ShoppingCartCreateMutationVariables = Exact<{
 
 export type ShoppingCartCreateMutation = { createShoppingCart?: { id: string } | null };
 
+export type ShoppingCartDecrementItemQtyMutationVariables = Exact<{
+  cartId: Scalars['String']['input'];
+  shoppingCartItemId: Scalars['String']['input'];
+}>;
+
+
+export type ShoppingCartDecrementItemQtyMutation = { reduceItemQtyInCart?: { id: string } | null };
+
 export type ShoppingCartGetByIdQueryVariables = Exact<{
   cartId: Scalars['ID']['input'];
 }>;
@@ -328,13 +343,13 @@ export type ShoppingCartGetByIdQueryVariables = Exact<{
 
 export type ShoppingCartGetByIdQuery = { shoppingCartGetByCartId?: { id: string, shopping_cart_item: Array<{ id: string, cart_id: string, product_item_id: string, qty: number, product_item: { id: string, product_id: string, SKU: string, qty_in_stock: number, price: number, product_images: Array<string> } }> } | null };
 
-export type ShoppingCartReduceItemQtyMutationVariables = Exact<{
-  cartId: Scalars['String']['input'];
+export type ShoppingCartIncrementItemQtyMutationVariables = Exact<{
   shoppingCartItemId: Scalars['String']['input'];
+  qty?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type ShoppingCartReduceItemQtyMutation = { reduceItemQtyInCart?: { id: string, shopping_cart_item: Array<{ id: string, cart_id: string, product_item_id: string, qty: number, product_item: { id: string, product_id: string, SKU: string, qty_in_stock: number, price: number, product_images: Array<string> } }> } | null };
+export type ShoppingCartIncrementItemQtyMutation = { incrementItemQtyInCart?: { id: string } | null };
 
 export type ShoppingCartRemoveItemMutationVariables = Exact<{
   cartId: Scalars['String']['input'];
@@ -342,7 +357,7 @@ export type ShoppingCartRemoveItemMutationVariables = Exact<{
 }>;
 
 
-export type ShoppingCartRemoveItemMutation = { removeItemFromCart?: { id: string, shopping_cart_item: Array<{ id: string, cart_id: string, product_item_id: string, qty: number, product_item: { id: string, product_id: string, SKU: string, qty_in_stock: number, price: number, product_images: Array<string> } }> } | null };
+export type ShoppingCartRemoveItemMutation = { removeItemFromCart?: { id: string } | null };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -538,23 +553,9 @@ export const ProductsGetListDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<ProductsGetListQuery, ProductsGetListQueryVariables>;
 export const ShoppingCartAddItemDocument = new TypedDocumentString(`
-    mutation ShoppingCartAddItem($cartId: String!, $cartItemId: String!, $qty: Int) {
-  addItemToCart(cartId: $cartId, cartItemId: $cartItemId, qty: $qty) {
+    mutation ShoppingCartAddItem($cartId: String!, $productItemId: String!, $qty: Int) {
+  addItemToCart(cartId: $cartId, productItemId: $productItemId, qty: $qty) {
     id
-    shopping_cart_item {
-      id
-      cart_id
-      product_item_id
-      qty
-      product_item {
-        id
-        product_id
-        SKU
-        qty_in_stock
-        price
-        product_images
-      }
-    }
   }
 }
     `) as unknown as TypedDocumentString<ShoppingCartAddItemMutation, ShoppingCartAddItemMutationVariables>;
@@ -565,6 +566,13 @@ export const ShoppingCartCreateDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ShoppingCartCreateMutation, ShoppingCartCreateMutationVariables>;
+export const ShoppingCartDecrementItemQtyDocument = new TypedDocumentString(`
+    mutation ShoppingCartDecrementItemQty($cartId: String!, $shoppingCartItemId: String!) {
+  reduceItemQtyInCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<ShoppingCartDecrementItemQtyMutation, ShoppingCartDecrementItemQtyMutationVariables>;
 export const ShoppingCartGetByIdDocument = new TypedDocumentString(`
     query ShoppingCartGetById($cartId: ID!) {
   shoppingCartGetByCartId(cartId: $cartId) {
@@ -586,45 +594,17 @@ export const ShoppingCartGetByIdDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ShoppingCartGetByIdQuery, ShoppingCartGetByIdQueryVariables>;
-export const ShoppingCartReduceItemQtyDocument = new TypedDocumentString(`
-    mutation ShoppingCartReduceItemQty($cartId: String!, $shoppingCartItemId: String!) {
-  reduceItemQtyInCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {
+export const ShoppingCartIncrementItemQtyDocument = new TypedDocumentString(`
+    mutation ShoppingCartIncrementItemQty($shoppingCartItemId: String!, $qty: Int) {
+  incrementItemQtyInCart(shoppingCartItemId: $shoppingCartItemId, qty: $qty) {
     id
-    shopping_cart_item {
-      id
-      cart_id
-      product_item_id
-      qty
-      product_item {
-        id
-        product_id
-        SKU
-        qty_in_stock
-        price
-        product_images
-      }
-    }
   }
 }
-    `) as unknown as TypedDocumentString<ShoppingCartReduceItemQtyMutation, ShoppingCartReduceItemQtyMutationVariables>;
+    `) as unknown as TypedDocumentString<ShoppingCartIncrementItemQtyMutation, ShoppingCartIncrementItemQtyMutationVariables>;
 export const ShoppingCartRemoveItemDocument = new TypedDocumentString(`
     mutation ShoppingCartRemoveItem($cartId: String!, $shoppingCartItemId: String!) {
   removeItemFromCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {
     id
-    shopping_cart_item {
-      id
-      cart_id
-      product_item_id
-      qty
-      product_item {
-        id
-        product_id
-        SKU
-        qty_in_stock
-        price
-        product_images
-      }
-    }
   }
 }
     `) as unknown as TypedDocumentString<ShoppingCartRemoveItemMutation, ShoppingCartRemoveItemMutationVariables>;

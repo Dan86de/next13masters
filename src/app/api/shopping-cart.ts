@@ -1,8 +1,9 @@
 import {
 	ShoppingCartAddItemDocument,
 	ShoppingCartCreateDocument,
+	ShoppingCartDecrementItemQtyDocument,
 	ShoppingCartGetByIdDocument,
-	ShoppingCartReduceItemQtyDocument,
+	ShoppingCartIncrementItemQtyDocument,
 	ShoppingCartRemoveItemDocument,
 } from "@/gql/graphql";
 import { ShoppingCart, ShoppingCartWithItems } from "@/model/shoppingCart";
@@ -28,6 +29,7 @@ export const getShoppingCartByCartId = async (
 		},
 		{
 			tags: ["cart"],
+			revalidate: 0,
 		},
 		"no-store",
 	);
@@ -57,10 +59,10 @@ export const addItemToCart = async (
 	cartId: string,
 	productItemId: string,
 	qty?: number,
-): Promise<ShoppingCartWithItems | null> => {
+): Promise<{ id: string } | null> => {
 	const graphqlResponse = await executeGraphql(ShoppingCartAddItemDocument, {
 		cartId,
-		cartItemId: productItemId,
+		productItemId,
 		qty,
 	});
 
@@ -70,29 +72,16 @@ export const addItemToCart = async (
 
 	return {
 		id: graphqlResponse.addItemToCart.id,
-		shoppingCartItems: graphqlResponse.addItemToCart.shopping_cart_item.map((item) => ({
-			id: item.id,
-			productItem: {
-				id: item.product_item.id,
-				images: item.product_item.product_images,
-				price: item.product_item.price,
-				productId: item.product_item_id,
-				SKU: item.product_item.SKU,
-				quantityInStock: item.product_item.qty_in_stock,
-			},
-			productItemId: item.product_item_id,
-			qty: item.qty,
-		})),
 	};
 };
 
 export const removeItemFromCart = async (
 	cartId: string,
-	productItemId: string,
-): Promise<ShoppingCartWithItems | null> => {
+	shoppingCartItemId: string,
+): Promise<{ id: string } | null> => {
 	const graphqlResponse = await executeGraphql(ShoppingCartRemoveItemDocument, {
 		cartId,
-		shoppingCartItemId: productItemId,
+		shoppingCartItemId,
 	});
 
 	if (!graphqlResponse.removeItemFromCart) {
@@ -101,32 +90,36 @@ export const removeItemFromCart = async (
 
 	return {
 		id: graphqlResponse.removeItemFromCart.id,
-		shoppingCartItems: graphqlResponse.removeItemFromCart.shopping_cart_item.length
-			? graphqlResponse.removeItemFromCart.shopping_cart_item.map((item) => ({
-					id: item.id,
-					productItem: {
-						id: item.product_item.id,
-						images: item.product_item.product_images,
-						price: item.product_item.price,
-						productId: item.product_item_id,
-						SKU: item.product_item.SKU,
-						quantityInStock: item.product_item.qty_in_stock,
-					},
-					productItemId: item.product_item_id,
-					qty: item.qty,
-			  }))
-			: [],
+	};
+};
+
+export const incrementItemQtyInCart = async (shoppingCartItemId: string) => {
+	const graphqlResponse = await executeGraphql(ShoppingCartIncrementItemQtyDocument, {
+		shoppingCartItemId,
+	});
+
+	if (!graphqlResponse.incrementItemQtyInCart) {
+		throw new Error("There is something wrong with incrementing item qty in cart.");
+	}
+
+	return {
+		id: graphqlResponse.incrementItemQtyInCart.id,
 	};
 };
 
 export const reduceItemQtyInCart = async (
 	cartId: string,
 	shoppingCartItemId: string,
-): Promise<ShoppingCartWithItems | null> => {
-	const graphqlResponse = await executeGraphql(ShoppingCartReduceItemQtyDocument, {
-		cartId,
-		shoppingCartItemId,
-	});
+): Promise<{ id: string } | null> => {
+	const graphqlResponse = await executeGraphql(
+		ShoppingCartDecrementItemQtyDocument,
+		{
+			cartId,
+			shoppingCartItemId,
+		},
+		{},
+		"no-store",
+	);
 
 	if (!graphqlResponse.reduceItemQtyInCart) {
 		throw new Error("There is something wrong with removing item from cart.");
@@ -134,20 +127,5 @@ export const reduceItemQtyInCart = async (
 
 	return {
 		id: graphqlResponse.reduceItemQtyInCart.id,
-		shoppingCartItems: graphqlResponse.reduceItemQtyInCart.shopping_cart_item.length
-			? graphqlResponse.reduceItemQtyInCart.shopping_cart_item.map((item) => ({
-					id: item.id,
-					productItem: {
-						id: item.product_item.id,
-						images: item.product_item.product_images,
-						price: item.product_item.price,
-						productId: item.product_item_id,
-						SKU: item.product_item.SKU,
-						quantityInStock: item.product_item.qty_in_stock,
-					},
-					productItemId: item.product_item_id,
-					qty: item.qty,
-			  }))
-			: [],
 	};
 };

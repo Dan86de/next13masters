@@ -1,13 +1,14 @@
 "use server";
 
 import { ProductItem } from "@/model/productItem";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
 	addItemToCart,
 	createShoppingCart,
 	getShoppingCartByCartId,
+	incrementItemQtyInCart as incrementItemQty,
 	reduceItemQtyInCart,
 	removeItemFromCart,
 } from "../api/shopping-cart";
@@ -26,49 +27,43 @@ export async function addToCartAction({
 	}
 
 	await addItemToCart(cart.id, selectedVariant.id);
+	revalidatePath("/cart");
 	redirect("/cart");
 }
 
 export async function removeCartItem({
-	cartId,
-	productItemId,
-}: {
-	cartId: string;
-	productItemId: string;
-}) {
-	await removeItemFromCart(cartId, productItemId);
-	revalidateTag("cart");
-}
-
-export async function incrementItemQtyInCart(formData: FormData) {
-	const cartId = formData.get("cartId") as string;
-	const productItemId = formData.get("productItemId") as string;
-
-	console.log(cartId, productItemId);
-	await addItemToCart(cartId, productItemId);
-	revalidateTag("cart");
-}
-
-export async function decrementItemQtyInCart({
 	cartId,
 	shoppingCartItemId,
 }: {
 	cartId: string;
 	shoppingCartItemId: string;
 }) {
+	await removeItemFromCart(cartId, shoppingCartItemId);
+	revalidatePath("/cart");
+}
+
+export async function incrementItemQtyInCart(formData: FormData) {
+	const shoppingCartItemId = formData.get("shoppingCartItemId") as string;
+
+	await incrementItemQty(shoppingCartItemId);
+	revalidatePath("/cart");
+}
+
+export async function decrementItemQtyInCart(formData: FormData) {
+	const cartId = formData.get("cartId") as string;
+	const shoppingCartItemId = formData.get("shoppingCartItemId") as string;
+
 	await reduceItemQtyInCart(cartId, shoppingCartItemId);
-	revalidateTag("cart");
+	revalidatePath("/cart");
 }
 
 async function getOrCreateCart(userId: string) {
 	const cartId = cookies().get("cartId")?.value;
 	if (cartId) {
-		revalidateTag("cart");
 		return getShoppingCartByCartId(cartId);
 	} else {
 		const cart = await createShoppingCart(userId);
 		cookies().set("cartId", cart.id);
-		revalidateTag("cart");
 		return cart;
 	}
 }

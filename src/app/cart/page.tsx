@@ -9,6 +9,8 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import { getShoppingCartByCartId } from "../api/shopping-cart";
 
+export const dynamic = "force-dynamic";
+
 export default async function CartPage() {
 	const cartId = cookies().get("cartId")?.value;
 	if (!cartId) {
@@ -72,11 +74,13 @@ export default async function CartPage() {
 													type="text"
 													defaultValue={cartItem.qty.toString()}
 													data-testid="quantity"
+													readOnly
+													className="w-12 text-center"
 												/>
-												<IncrementQtyBtn cartId={cart.id} productItemId={cartItem.productItem.id} />
+												<IncrementQtyBtn shoppingCartItemId={cartItem.id} />
 											</div>
 
-											<RemoveItemFromCartBtn cartId={cartId} cartItemId={cartItem.id} />
+											<RemoveItemFromCartBtn cartId={cartId} shoppingCartItemId={cartItem.id} />
 										</div>
 									</div>
 

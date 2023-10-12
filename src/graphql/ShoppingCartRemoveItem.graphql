@@ -1,19 +1,5 @@
 mutation ShoppingCartRemoveItem($cartId: String!, $shoppingCartItemId: String!) {
 	removeItemFromCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {
 		id
-		shopping_cart_item {
-			id
-			cart_id
-			product_item_id
-			qty
-			product_item {
-				id
-				product_id
-				SKU
-				qty_in_stock
-				price
-				product_images
-			}
-		}
 	}
 }

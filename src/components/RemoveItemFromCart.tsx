@@ -4,12 +4,12 @@ import { Button } from "./ui/button";
 
 export const RemoveItemFromCartBtn = ({
 	cartId,
-	cartItemId,
+	shoppingCartItemId,
 }: {
 	cartId: string;
-	cartItemId: string;
+	shoppingCartItemId: string;
 }) => {
-	const removeFromCartAction = removeCartItem.bind(null, { cartId, productItemId: cartItemId });
+	const removeFromCartAction = removeCartItem.bind(null, { cartId, shoppingCartItemId });
 	return (
 		<form className="absolute right-0 top-0" action={removeFromCartAction}>
 			<Button
