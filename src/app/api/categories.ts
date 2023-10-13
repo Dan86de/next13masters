@@ -1,5 +1,5 @@
 import { CategoriesGetListDocument, CategoryGetByNameDocument } from "@/gql/graphql";
-import { Category } from "@/model/category";
+import { Category, CategoryWithVariations } from "@/model/category";
 import { executeGraphql } from "./products";
 
 export const getCategoriesList = async (skip?: number, take?: number): Promise<Category[]> => {
@@ -11,7 +11,7 @@ export const getCategoriesList = async (skip?: number, take?: number): Promise<C
 	}));
 };
 
-export const getCategoryByName = async (name: string): Promise<Category> => {
+export const getCategoryByName = async (name: string): Promise<CategoryWithVariations> => {
 	const graphqlResponse = await executeGraphql(CategoryGetByNameDocument, { name });
 	if (!graphqlResponse.category) {
 		throw new Error("There is no category with this name");
@@ -19,5 +19,6 @@ export const getCategoryByName = async (name: string): Promise<Category> => {
 	return {
 		id: graphqlResponse.category.id,
 		name: graphqlResponse.category.category_name,
+		variations: graphqlResponse.category.variations,
 	};
 };

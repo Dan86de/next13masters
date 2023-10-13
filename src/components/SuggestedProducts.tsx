@@ -1,6 +1,8 @@
 import { getCategoriesList } from "@/app/api/categories";
 import { getProductsByCategoryId } from "@/app/api/products";
+import { formatMoney } from "@/lib/utils";
 import { Category } from "@/model/category";
+import Image from "next/image";
 import Link from "next/link";
 
 export const SuggestedProducts = async ({ categoryName }: { categoryName: string }) => {
@@ -29,10 +31,12 @@ export const SuggestedProducts = async ({ categoryName }: { categoryName: string
 				{fourRelatedProducts.map((relatedProduct) => (
 					<li key={relatedProduct.id} className="group relative">
 						<div className="aspect-h-1 aspect-w-1 lg:aspect-none w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-80">
-							<img
+							<Image
+								width={600}
+								height={600}
 								src={relatedProduct.image.src}
 								alt={relatedProduct.image.alt}
-								className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+								className="h-full w-full object-contain object-center transition-all duration-300 group-hover:scale-105 group-hover:opacity-75 lg:h-full lg:w-full"
 							/>
 						</div>
 						<div className="mt-4 flex justify-between">
@@ -45,7 +49,9 @@ export const SuggestedProducts = async ({ categoryName }: { categoryName: string
 								</h3>
 								<p className="mt-1 text-sm text-gray-500">{relatedProduct.category}</p>
 							</div>
-							<p className="text-sm font-medium text-gray-900">{relatedProduct.price}</p>
+							<p className="text-sm font-medium text-gray-900">
+								{formatMoney(relatedProduct.price / 100)}
+							</p>
 						</div>
 					</li>
 				))}

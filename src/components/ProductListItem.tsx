@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { ProductCoverImage } from "@/components/ProductCoverImage";
 import { ProductListItemDescription } from "@/components/ProductListItemDescription";
 import { type Product } from "@/model/product";
+import Link from "next/link";
 
 type ProductListItemProps = {
 	product: Product;

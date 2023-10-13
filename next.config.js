@@ -2,6 +2,7 @@
 const nextConfig = {
 	experimental: {
 		typedRoutes: true,
+		serverActions: true,
 	},
 	redirects: async () => {
 		return [
@@ -21,12 +22,6 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: "https",
-				hostname: "naszsklep-api.vercel.app",
-				port: "",
-				pathname: "/images/**",
-			},
-			{
-				protocol: "https",
 				hostname: "tailwindui.com",
 				port: "",
 				pathname: "/img/**",
@@ -34,11 +29,6 @@ const nextConfig = {
 			{
 				protocol: "https",
 				hostname: "dsc.cloud",
-				port: "",
-			},
-			{
-				protocol: "https",
-				hostname: "images.unsplash.com",
 				port: "",
 			},
 		],
