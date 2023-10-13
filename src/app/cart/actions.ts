@@ -69,7 +69,15 @@ export async function decrementItemQtyInCart(formData: FormData) {
 async function getOrCreateCart(userId: string) {
 	const cartId = cookies().get("cartId")?.value;
 	if (cartId) {
-		return await getShoppingCartByCartId(cartId);
+		const cart = await getShoppingCartByCartId(cartId);
+		if (!cart) {
+			cookies().delete("cartId");
+			const cart = await createShoppingCart(userId);
+			cookies().set("cartId", cart.id);
+			return cart;
+		} else {
+			return cart;
+		}
 	} else {
 		const cart = await createShoppingCart(userId);
 		cookies().set("cartId", cart.id);

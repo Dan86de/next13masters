@@ -44,7 +44,7 @@ export const getShoppingCartByCartId = async (
 				id: item.product_item.id,
 				images: item.product_item.product_images,
 				price: item.product_item.price,
-				productId: item.product_item_id,
+				productId: item.product_item.product_id,
 				SKU: item.product_item.SKU,
 				quantityInStock: item.product_item.qty_in_stock,
 			},

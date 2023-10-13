@@ -1,21 +1,39 @@
 import { DecrementQtyBtn } from "@/components/DecrementQtyButton";
 import { IncrementQtyBtn } from "@/components/IncrementQtyButton";
+import { ProductDetailsOnCartProductListItem } from "@/components/ProductDetailsOnCartProductListItem";
 import { RemoveItemFromCartBtn } from "@/components/RemoveItemFromCart";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { formatMoney } from "@/lib/utils";
+import { ShoppingCartItem } from "@/model/shoppingCartItem";
 import { LucideCheck, LucideClock, LucideShieldQuestion } from "lucide-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import { getShoppingCartByCartId } from "../api/shopping-cart";
 
 export const dynamic = "force-dynamic";
+const estimateShippingCost = 0;
+
+function calculateSubtotal(cartItems: ShoppingCartItem[]): number {
+	return cartItems.reduce((acc, item) => {
+		return acc + item.qty * item.productItem.price;
+	}, 0);
+}
 
 export default async function CartPage() {
 	const cartId = cookies().get("cartId")?.value;
 	if (!cartId) {
-		return <div>There is no card with this id.</div>;
+		return <div>Firs you have to add something into cart.</div>;
 	}
 	const cart = await getShoppingCartByCartId(cartId);
+
+	if (!cart) {
+		return <div>There is no cart with given id.</div>;
+	}
+
+	const subtotal = calculateSubtotal(cart.shoppingCartItems);
+	const estimateTax = subtotal * 0.22;
+	const total = estimateShippingCost + estimateTax + subtotal;
 
 	return (
 		<main className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -42,29 +60,9 @@ export default async function CartPage() {
 
 								<div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
 									<div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
-										{/* <div>
-											<div className="flex justify-between">
-												<h3 className="text-sm">
-													<a
-														href={cartItem.productItem.images[0]}
-														className="font-medium text-zinc-700 hover:text-zinc-800"
-													>
-														{cartItem.name}
-													</a>
-												</h3>
-											</div>
-											<div className="mt-1 flex text-sm">
-												<p className="text-zinc-500">{cartItem.color}</p>
-												{cartItem.size ? (
-													<p className="ml-4 border-l border-zinc-200 pl-4 text-zinc-500">
-														{cartItem.size}
-													</p>
-												) : null}
-											</div>
-											<p className="mt-1 text-sm font-medium text-zinc-900">{cartItem.price}</p>
-										</div> */}
+										<ProductDetailsOnCartProductListItem productItem={cartItem.productItem} />
 
-										<div className="mt-4 sm:mt-0 sm:pr-9">
+										<div className="mt-4 sm:-mt-2 sm:pr-9">
 											<div className="flex items-center gap-2">
 												<Label htmlFor={`quantity-${cartItemIdx}`} className="sr-only">
 													Quantity, {cartItem.qty}
@@ -115,7 +113,7 @@ export default async function CartPage() {
 					<dl className="mt-6 space-y-4">
 						<div className="flex items-center justify-between">
 							<dt className="text-sm text-zinc-600">Subtotal</dt>
-							<dd className="text-sm font-medium text-zinc-900">$99.00</dd>
+							<dd className="text-sm font-medium text-zinc-900">{formatMoney(subtotal / 100)}</dd>
 						</div>
 						<div className="flex items-center justify-between border-t border-zinc-200 pt-4">
 							<dt className="flex items-center text-sm text-zinc-600">
@@ -125,7 +123,9 @@ export default async function CartPage() {
 									<LucideShieldQuestion className="h-5 w-5" aria-hidden="true" />
 								</a>
 							</dt>
-							<dd className="text-sm font-medium text-zinc-900">$5.00</dd>
+							<dd className="text-sm font-medium text-zinc-900">
+								{formatMoney(estimateShippingCost)}
+							</dd>
 						</div>
 						<div className="flex items-center justify-between border-t border-zinc-200 pt-4">
 							<dt className="flex text-sm text-zinc-600">
@@ -135,11 +135,13 @@ export default async function CartPage() {
 									<LucideShieldQuestion className="h-5 w-5" aria-hidden="true" />
 								</a>
 							</dt>
-							<dd className="text-sm font-medium text-zinc-900">$8.32</dd>
+							<dd className="text-sm font-medium text-zinc-900">
+								{formatMoney(estimateTax / 100)}
+							</dd>
 						</div>
 						<div className="flex items-center justify-between border-t border-zinc-200 pt-4">
 							<dt className="text-base font-medium text-zinc-900">Order total</dt>
-							<dd className="text-base font-medium text-zinc-900">$112.32</dd>
+							<dd className="text-base font-medium text-zinc-900">{formatMoney(total / 100)}</dd>
 						</div>
 					</dl>
 
