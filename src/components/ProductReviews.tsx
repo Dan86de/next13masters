@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { StarIcon } from "lucide-react";
-import { AddReviewForm } from "./AddReviewForm";
 
 const reviews = {
 	average: 4,
@@ -101,7 +100,7 @@ export const ProductReviews = () => {
 							<p className="mt-1 text-sm text-zinc-600">
 								If you’ve used this product, share your thoughts with other customers
 							</p>
-							<AddReviewForm />
+							{/* <AddReviewForm /> */}
 						</div>
 					</div>
 					{/* REVIEW LIST */}
