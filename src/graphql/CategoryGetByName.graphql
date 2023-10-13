@@ -2,5 +2,13 @@ query CategoryGetByName($name: String!) {
 	category(name: $name) {
 		id
 		category_name
+		variations {
+			id
+			name
+			variation_options {
+				id
+				value
+			}
+		}
 	}
 }

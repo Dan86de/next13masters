@@ -1,0 +1,5 @@
+mutation ShoppingCartDecrementItemQty($cartId: String!, $shoppingCartItemId: String!) {
+	reduceItemQtyInCart(cartId: $cartId, shoppingCartItemId: $shoppingCartItemId) {
+		id
+	}
+}

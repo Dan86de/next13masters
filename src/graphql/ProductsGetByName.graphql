@@ -9,7 +9,17 @@ query ProductsByName($name: String!) {
 			category_name
 		}
 		product_items {
+			id
 			price
+			SKU
+			qty_in_stock
+			product_images
+			product_configurations {
+				variation_option {
+					id
+					value
+				}
+			}
 		}
 	}
 }

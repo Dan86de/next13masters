@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require("tailwindcss/plugin");
 module.exports = {
 	darkMode: ["class"],
 	content: [
@@ -76,5 +77,13 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		plugin(function ({ addVariant }: { addVariant: (...args: string[]) => void }) {
+			addVariant("stars-rating", "& svg:hover ~ svg");
+		}),
+		plugin(function ({ addVariant }: { addVariant: (...args: string[]) => void }) {
+			addVariant("current-hover", "& svg:hover");
+		}),
+	],
 };

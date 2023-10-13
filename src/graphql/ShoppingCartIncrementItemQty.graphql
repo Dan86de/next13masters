@@ -1,0 +1,5 @@
+mutation ShoppingCartIncrementItemQty($shoppingCartItemId: String!, $qty: Int) {
+	incrementItemQtyInCart(shoppingCartItemId: $shoppingCartItemId, qty: $qty) {
+		id
+	}
+}

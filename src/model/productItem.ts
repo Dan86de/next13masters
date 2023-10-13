@@ -1,8 +1,8 @@
 export type ProductItem = {
 	id: string;
-	product_id: string;
+	productId: string;
 	SKU: string;
-	quantityInStock: string;
+	quantityInStock: number;
 	price: number;
 	images: string[];
 };

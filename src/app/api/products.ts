@@ -12,6 +12,8 @@ import { redirect } from "next/navigation";
 export const executeGraphql = async <TResult, TVariables>(
 	query: TypedDocumentString<TResult, TVariables>,
 	variables: TVariables,
+	next?: NextFetchRequestConfig,
+	cache?: RequestCache,
 ): Promise<TResult> => {
 	if (!process.env.GRAPHQL_URL) {
 		throw TypeError("GRAPHQL_URL not set");
@@ -25,6 +27,8 @@ export const executeGraphql = async <TResult, TVariables>(
 		headers: {
 			"Content-Type": "application/json",
 		},
+		next,
+		cache,
 	});
 
 	type GraphQLResponse<T> =
@@ -53,11 +57,19 @@ export const getProductsList = async (skip?: number, take?: number): Promise<Pro
 			alt: product.name,
 		},
 		price: product.product_items[0].price,
+		product_items: product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	}));
 };
 
 export const getProductById = async (id: string): Promise<Product | null> => {
-	const graphqlResponse = await executeGraphql(ProductGetByIdDocument, { id });
+	const graphqlResponse = await executeGraphql(ProductGetByIdDocument, { id }, { revalidate: 1 });
 	if (!graphqlResponse.product) {
 		redirect("/");
 	}
@@ -71,6 +83,14 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 			alt: graphqlResponse.product.name,
 		},
 		price: graphqlResponse.product.product_items[0].price,
+		product_items: graphqlResponse.product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: graphqlResponse.product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	};
 };
 
@@ -89,6 +109,14 @@ export const getProductsByCategoryId = async (categoryId: string): Promise<Produ
 			alt: product.name,
 		},
 		price: product.product_items[0].price,
+		product_items: product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	}));
 };
 
@@ -107,6 +135,14 @@ export const getProductsByCollectionId = async (collectionId: string): Promise<P
 			alt: product.name,
 		},
 		price: product.product_items[0].price,
+		product_items: product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	}));
 };
 
@@ -125,5 +161,13 @@ export const getProductsByName = async (name: string): Promise<Product[]> => {
 			alt: product.name,
 		},
 		price: product.product_items[0].price,
+		product_items: product.product_items.map((item) => ({
+			id: item.id,
+			price: item.price,
+			images: item.product_images,
+			productId: product!.id,
+			quantityInStock: item.qty_in_stock,
+			SKU: item.SKU,
+		})),
 	}));
 };
