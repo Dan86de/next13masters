@@ -35,6 +35,7 @@ export const getShoppingCartByCartId = async (
 	if (!graphqlResponse.shoppingCartGetByCartId) {
 		throw new Error("Cart does not exist");
 	}
+
 	return {
 		id: graphqlResponse.shoppingCartGetByCartId.id,
 		shoppingCartItems: graphqlResponse.shoppingCartGetByCartId.shopping_cart_item.map((item) => ({
