@@ -47,19 +47,14 @@ export async function removeCartItem({
 	});
 }
 
-export async function incrementItemQtyInCart(formData: FormData) {
-	const shoppingCartItemId = formData.get("shoppingCartItemId") as string;
-
+export async function incrementItemQtyInCart(shoppingCartItemId: string) {
 	await incrementItemQty(shoppingCartItemId).finally(() => {
 		revalidatePath("/cart");
 		revalidateTag("cart");
 	});
 }
 
-export async function decrementItemQtyInCart(formData: FormData) {
-	const cartId = formData.get("cartId") as string;
-	const shoppingCartItemId = formData.get("shoppingCartItemId") as string;
-
+export async function decrementItemQtyInCart(cartId: string, shoppingCartItemId: string) {
 	await reduceItemQtyInCart(cartId, shoppingCartItemId).finally(() => {
 		revalidatePath("/cart");
 		revalidateTag("cart");
