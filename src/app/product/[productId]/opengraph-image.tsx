@@ -1,5 +1,6 @@
 import { getProductById } from "@/app/api/products";
 import { formatMoney } from "@/lib/utils";
+import Image from "next/image";
 import { ImageResponse, NextResponse } from "next/server";
 
 export const runtime = "edge";
@@ -19,7 +20,8 @@ export default async function og({ params }: { params: { productId: string } }) 
 		(
 			<div tw="relative w-full overflow-hidden rounded-lg flex">
 				<div tw="flex items-center justify-center">
-					<img
+					<Image
+						priority
 						tw="h-full w-full object-cover object-center"
 						width={400}
 						height={400}

@@ -1,9 +1,7 @@
-import { DecrementQtyBtn } from "@/components/DecrementQtyButton";
-import { IncrementQtyBtn } from "@/components/IncrementQtyButton";
 import { ProductDetailsOnCartProductListItem } from "@/components/ProductDetailsOnCartProductListItem";
+import { QtyFormInCart } from "@/components/QtyFormInCart";
 import { RemoveItemFromCartBtn } from "@/components/RemoveItemFromCart";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { formatMoney } from "@/lib/utils";
 import { ShoppingCartItem } from "@/model/shoppingCartItem";
 import { LucideCheck, LucideClock, LucideShieldQuestion } from "lucide-react";
@@ -46,7 +44,7 @@ export default async function CartPage() {
 					</h2>
 
 					<ul role="list" className="divide-y divide-zinc-200 border-b border-t border-zinc-200">
-						{cart?.shoppingCartItems.map((cartItem, cartItemIdx) => (
+						{cart?.shoppingCartItems.map((cartItem) => (
 							<li key={cartItem.id} className="flex py-6 sm:py-10">
 								<div className="flex-shrink-0">
 									<Image
@@ -63,16 +61,11 @@ export default async function CartPage() {
 										<ProductDetailsOnCartProductListItem productItem={cartItem.productItem} />
 
 										<div className="mt-4 sm:-mt-2 sm:pr-9">
-											<div className="flex items-center gap-2">
-												<Label htmlFor={`quantity-${cartItemIdx}`} className="sr-only">
-													Quantity, {cartItem.qty}
-												</Label>
-												<DecrementQtyBtn cartId={cart.id} shoppingCartItemId={cartItem.id} />
-												<div data-testid="quantity" className="w-12 text-center">
-													{cartItem.qty}
-												</div>
-												<IncrementQtyBtn shoppingCartItemId={cartItem.id} />
-											</div>
+											<QtyFormInCart
+												cartId={cartId}
+												cartItemId={cartItem.id}
+												cartItemQty={cartItem.qty}
+											/>
 
 											<RemoveItemFromCartBtn cartId={cartId} shoppingCartItemId={cartItem.id} />
 										</div>
