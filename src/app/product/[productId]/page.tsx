@@ -135,8 +135,9 @@ export default async function SingleProductPage({
 					<Image
 						width={696}
 						height={696}
+						priority
 						key={product.image.alt}
-						src={selectedVariant ? selectedVariant.images[0] : product.image.src}
+						src={product.image.src}
 						alt={product.image.alt}
 						className={cn(true ? "lg:col-span-2 lg:row-span-2" : "hidden lg:block", "rounded-lg")}
 					/>
