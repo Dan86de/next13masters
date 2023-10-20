@@ -1,10 +1,10 @@
 import { getCategoriesList } from "@/app/api/categories";
 import { ActiveLink } from "@/components/ActiveLink";
+import { SearchField } from "@/components/SearchField";
+import { Button } from "@/components/ui/button";
 import { LucideShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { UrlObject } from "url";
-import { SearchField } from "./SearchField";
-import { Button } from "./ui/button";
 
 const numOfItemsInBag = 0;
 
@@ -46,7 +46,7 @@ export const Navbar = async () => {
 					</ActiveLink>
 				))}
 			</ul>
-			<Link href={"/cart"}>
+			<Link href={"/cart"} role="button">
 				<Button variant={"ghost"} className="flex gap-1 px-2">
 					<LucideShoppingBag className={"h-6 w-6 "} />
 					<span>{numOfItemsInBag}</span>

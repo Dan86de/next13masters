@@ -32,6 +32,7 @@ export const SuggestedProducts = async ({ categoryName }: { categoryName: string
 					<li key={relatedProduct.id} className="group relative">
 						<div className="aspect-h-1 aspect-w-1 lg:aspect-none w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-80">
 							<Image
+								priority
 								width={600}
 								height={600}
 								src={relatedProduct.image.src}
