@@ -1,7 +1,7 @@
 "use server";
 
 import { ProductItem } from "@/model/productItem";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
@@ -29,7 +29,6 @@ export async function addToCartAction({
 
 	await addItemToCart(cart.id, selectedVariant.id).finally(() => {
 		revalidatePath("/cart");
-		revalidateTag("cart");
 		redirect("/cart");
 	});
 }
@@ -43,21 +42,18 @@ export async function removeCartItem({
 }) {
 	await removeItemFromCart(cartId, shoppingCartItemId).finally(() => {
 		revalidatePath("/cart");
-		revalidateTag("cart");
 	});
 }
 
 export async function incrementItemQtyInCart(shoppingCartItemId: string) {
 	await incrementItemQty(shoppingCartItemId).finally(() => {
 		revalidatePath("/cart");
-		revalidateTag("cart");
 	});
 }
 
 export async function decrementItemQtyInCart(cartId: string, shoppingCartItemId: string) {
 	await reduceItemQtyInCart(cartId, shoppingCartItemId).finally(() => {
 		revalidatePath("/cart");
-		revalidateTag("cart");
 	});
 }
 
